@@ -10,10 +10,13 @@ import {
   setupIonicReact
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { ellipse, square, triangle, alarm } from 'ionicons/icons';
-import Tab1 from './pages/Tab1';
+
+/* Main Tabs for the app */
+import { mic, alarm, download } from 'ionicons/icons';
+
+import Recorder from './pages/Recorder';
 import Metronome from './pages/Metronome';
-import Tab3 from './pages/Tab3';
+import SavedFiles from './pages/SavedFiles';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -41,27 +44,27 @@ const App: React.FC = () => (
     <IonReactRouter>
       <IonTabs>
         <IonRouterOutlet>
-          <Route exact path="/tab1">
-            <Tab1 />
+          <Route exact path="/recorder">
+            <Recorder />
           </Route>
 
           <Route exact path="/metronome">
             <Metronome />
           </Route>
 
-          <Route path="/tab3">
-            <Tab3 />
+          <Route path="/saved">
+            <SavedFiles />
           </Route>
 
           <Route exact path="/">
-            <Redirect to="/tab1" />
+            <Redirect to="/recorder" />
           </Route>
         </IonRouterOutlet>
 
         <IonTabBar slot="bottom">
-          <IonTabButton tab="tab1" href="/tab1">
-            <IonIcon aria-hidden="true" icon={triangle} />
-            <IonLabel>Tab 1</IonLabel>
+          <IonTabButton tab="recorder" href="/recorder">
+            <IonIcon aria-hidden="true" icon={mic} />
+            <IonLabel>Recorder</IonLabel>
           </IonTabButton>
 
           <IonTabButton tab="metronome" href="/metronome">
@@ -69,9 +72,9 @@ const App: React.FC = () => (
             <IonLabel>Metronome</IonLabel>
           </IonTabButton>
 
-          <IonTabButton tab="tab3" href="/tab3">
-            <IonIcon aria-hidden="true" icon={square} />
-            <IonLabel>Tab 3</IonLabel>
+          <IonTabButton tab="saved" href="/saved">
+            <IonIcon aria-hidden="true" icon={download} />
+            <IonLabel>Saved Files</IonLabel>
           </IonTabButton>
         </IonTabBar>
       </IonTabs>

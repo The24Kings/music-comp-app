@@ -1,5 +1,5 @@
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import ExploreContainer from '../components/ExploreContainer';
+import MetronomeContainer from '../components/MetronomeContainer';
 
 const Metronome: React.FC = () => {
     return (
@@ -15,7 +15,7 @@ const Metronome: React.FC = () => {
               <IonTitle size="large">Metronome</IonTitle>
             </IonToolbar>
           </IonHeader>
-          <ExploreContainer name="Metronome page" />
+          <MetronomeContainer name="Metronome page" />
         </IonContent>
       </IonPage>
     );

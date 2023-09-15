@@ -37,10 +37,6 @@ const Metronome: React.FC = () => {
           </IonToolbar>
         </IonHeader>
         <MetronomeContainer name="Metronome page" />
-        {/* Wrap ImageSlideshow in a centered container */}
-        <div className="centered-container">
-            <ImageSlideshow />
-        </div>
       </IonContent>
     </IonPage>
   );

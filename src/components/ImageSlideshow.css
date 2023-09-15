@@ -1,0 +1,6 @@
+.centered-container {
+    display: flex;
+    justify-content: center; /* Horizontally center */
+    align-items: flex-start; /* Vertically center */
+    height: 100; /* Ensure full height */
+}

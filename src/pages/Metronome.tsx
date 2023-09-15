@@ -18,27 +18,23 @@ import MetronomeContainer from '../components/MetronomeContainer';
 import ImageSlideshow from '../components/ImageSlideshow';
 
 const Metronome: React.FC = () => {
-  return (
-    <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Metronome</IonTitle>
-          <IonButtons slot="primary">
-            <IonButton>
-              <IonIcon slot="icon-only" ios={ellipsisHorizontal} md={ellipsisVertical}></IonIcon>
-            </IonButton>
-          </IonButtons>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent fullscreen>
-        <IonHeader collapse="condense">
-          <IonToolbar>
-            <IonTitle size="large">Metronome</IonTitle>
-          </IonToolbar>
-        </IonHeader>
-        <MetronomeContainer name="Metronome page" />
-      </IonContent>
-    </IonPage>
+    return (
+        <IonPage>
+            <IonContent fullscreen>
+                <IonHeader>
+                    <IonToolbar>
+                        <IonTitle size="large">Metronome</IonTitle>
+                        <IonButtons slot="primary">
+                            <IonButton>
+                                <IonIcon slot="icon-only" ios={ellipsisHorizontal} md={ellipsisVertical}></IonIcon>
+                            </IonButton>
+                        </IonButtons>
+                    </IonToolbar>
+                </IonHeader>
+
+                <MetronomeContainer name="Metronome page" />
+            </IonContent>
+        </IonPage>
   );
 };
 

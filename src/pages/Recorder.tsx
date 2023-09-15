@@ -1,4 +1,19 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import {
+    IonContent,
+    IonHeader,
+    IonPage,
+    IonIcon,
+    IonTitle,
+    IonToolbar,
+    IonButton,
+    IonButtons
+} from '@ionic/react';
+
+import {
+    ellipsisHorizontal,
+    ellipsisVertical
+} from 'ionicons/icons';
+
 import RecordContainer from '../components/RecordContainer';
 
 const Recorder: React.FC = () => {
@@ -7,6 +22,11 @@ const Recorder: React.FC = () => {
       <IonHeader>
         <IonToolbar>
           <IonTitle>Recorder</IonTitle>
+          <IonButtons slot="primary">
+            <IonButton>
+              <IonIcon slot="icon-only" ios={ellipsisHorizontal} md={ellipsisVertical}></IonIcon>
+            </IonButton>
+          </IonButtons>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>

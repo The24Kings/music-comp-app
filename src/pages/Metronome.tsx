@@ -15,6 +15,7 @@ import {
 } from 'ionicons/icons';
 
 import MetronomeContainer from '../components/MetronomeContainer';
+import ImageSlideshow from '../components/ImageSlideshow';
 
 const Metronome: React.FC = () => {
   return (
@@ -36,6 +37,10 @@ const Metronome: React.FC = () => {
           </IonToolbar>
         </IonHeader>
         <MetronomeContainer name="Metronome page" />
+        {/* Wrap ImageSlideshow in a centered container */}
+        <div className="centered-container">
+            <ImageSlideshow />
+        </div>
       </IonContent>
     </IonPage>
   );

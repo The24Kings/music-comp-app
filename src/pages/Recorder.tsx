@@ -1,3 +1,4 @@
+import RecordContainer from '../components/RecordContainer';
 import {
     IonContent,
     IonHeader,
@@ -14,7 +15,6 @@ import {
     ellipsisVertical
 } from 'ionicons/icons';
 
-import RecordContainer from '../components/RecordContainer';
 
 const Recorder: React.FC = () => {
     return (
@@ -32,7 +32,6 @@ const Recorder: React.FC = () => {
                 </IonHeader>
 
                 <RecordContainer name="Recorder page" />
-
             </IonContent>
         </IonPage>
     );

@@ -1,7 +1,7 @@
 import './RecordContainer.css';
 import { useState, useRef } from "react";
-import VideoRecorder from '../components/VideoRecorder';
-import AudioRecorder from '../components/AudioRecorder';
+import VideoRecorder from './VideoRecorder.tsx';
+import AudioRecorder from './AudioRecorder.tsx';
 interface ContainerProps {
   name: string;
 }

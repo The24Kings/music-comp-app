@@ -17,6 +17,9 @@ const MetronomeContainer: React.FC<ContainerProps> = ({ name }) => {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [direction, setDirection] = useState(1); // 1 for forward, -1 for backward
 
+    var bpm = 60;
+    var speed = (60000 / bpm) / 4; // beat / num of frames //TODO CHANGE PLEASE
+
     useEffect(() => {
         const interval = setInterval(() => {
             setCurrentImageIndex((prevIndex) => {
@@ -32,7 +35,7 @@ const MetronomeContainer: React.FC<ContainerProps> = ({ name }) => {
 
                 return nextIndex;
             });
-        }, 1000); // Change image every 1 second (adjust as needed)
+        }, speed);
 
         return () => clearInterval(interval);
     }, [direction, imagePaths.length]);

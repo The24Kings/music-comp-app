@@ -15,7 +15,6 @@ import {
 } from 'ionicons/icons';
 
 import MetronomeContainer from '../components/MetronomeContainer';
-import ImageSlideshow from '../components/ImageSlideshow';
 
 const Metronome: React.FC = () => {
     return (

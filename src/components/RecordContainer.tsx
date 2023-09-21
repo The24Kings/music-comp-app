@@ -7,12 +7,12 @@ interface ContainerProps {
 }
 
 const RecordContainer: React.FC<ContainerProps> = ({ name }) => {
-    let [recordOption, setRecordOption] = useState("video");
-    const toggleRecordOption = (type) => {
-        return () => {
-            setRecordOption(type);
-        };
-    };
+    //let [recordOption, setRecordOption] = useState("video");
+    //const toggleRecordOption = (type) => {
+    //    return () => {
+    //        setRecordOption(type);
+    //    };
+    //};
 
     return (
     /*

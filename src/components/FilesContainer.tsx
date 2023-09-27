@@ -8,7 +8,7 @@ const FilesContainer: React.FC<ContainerProps> = ({ name }) => {
   return (
     <div className="container">
       <strong>{name}</strong>
-      <p>INSERT FILES HERE</p>
+      <p>PULL FILES FROM SYSTEM</p>
     </div>
   );
 };

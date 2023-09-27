@@ -9,10 +9,17 @@ import {
   IonTabs,
   setupIonicReact
 } from '@ionic/react';
+
+import React from 'react';
+
 import { IonReactRouter } from '@ionic/react-router';
 
 /* Main Tabs for the app */
-import { mic, alarm, download } from 'ionicons/icons';
+import {
+  mic,
+  alarm,
+  download
+} from 'ionicons/icons';
 
 import Recorder from './pages/Recorder';
 import Metronome from './pages/Metronome';

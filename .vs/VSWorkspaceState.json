@@ -1,0 +1,14 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\cypress\\fixtures",
+    "\\cypress\\support",
+    "\\public",
+    "\\public\\assets\\sounds",
+    "\\src",
+    "\\src\\components",
+    "\\src\\pages"
+  ],
+  "SelectedNode": "\\src\\pages\\Metronome.tsx",
+  "PreviewInSolutionExplorer": false
+}

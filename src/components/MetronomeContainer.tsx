@@ -1,4 +1,5 @@
 import './MetronomeContainer.css';
+
 import React, { useState, useEffect, useRef } from 'react';
 import { IonButton, IonButtons, IonContent, IonInput, IonItem, IonLabel, IonToolbar } from '@ionic/react';
 import sound from "/assets/sounds/metronomeSound2.mp3";

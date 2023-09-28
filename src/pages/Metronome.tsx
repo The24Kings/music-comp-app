@@ -1,30 +1,40 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import {
+    IonContent,
+    IonHeader,
+    IonPage,
+    IonIcon,
+    IonTitle,
+    IonToolbar,
+    IonButton,
+    IonButtons
+} from '@ionic/react';
+
+import {
+    ellipsisHorizontal,
+    ellipsisVertical
+} from 'ionicons/icons';
+
 import MetronomeContainer from '../components/MetronomeContainer';
-import ImageSlideshow from '../components/ImageSlideshow';
 
 const Metronome: React.FC = () => {
     return (
         <IonPage>
-            <IonHeader>
-                <IonToolbar>
-                    <IonTitle>Metronome</IonTitle>
-                </IonToolbar>
-            </IonHeader>
             <IonContent fullscreen>
-                <IonHeader collapse="condense">
+                <IonHeader>
                     <IonToolbar>
                         <IonTitle size="large">Metronome</IonTitle>
+                        <IonButtons slot="primary">
+                            <IonButton>
+                                <IonIcon slot="icon-only" ios={ellipsisHorizontal} md={ellipsisVertical}></IonIcon>
+                            </IonButton>
+                        </IonButtons>
                     </IonToolbar>
                 </IonHeader>
-                <MetronomeContainer name="Metronome page" />
 
-                {/* Wrap ImageSlideshow in a centered container */}
-                <div className="centered-container">
-                    <ImageSlideshow />
-                </div>
+                <MetronomeContainer name="Metronome page" />
             </IonContent>
         </IonPage>
-    );
+  );
 };
 
 export default Metronome;

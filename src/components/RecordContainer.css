@@ -37,7 +37,7 @@
 .audio-player,
 .video-player {
     display: flex;
-    flex-direction: column;
+    justifyContent: center;
     align-items: center;
 }
 .audio-player,
@@ -64,6 +64,8 @@ body {
   min-width: 320px;
   min-height: 100vh;
 }
-.audiocon {
-
+button
+{
+    width: 150px;
+    height: 50px;
 }

@@ -58,12 +58,12 @@ const AudioRecorder = () => {
       };
     };
     return (
-        <div style={{display: 'flex', justifyContent: 'center'}}>
+        <div>
             <h2>Audio Recorder</h2>
             <main>
                 <div className="audio-controls">
                     {!permission ? (
-                        <button onClick={getMicrophonePermission} type="button" style={{display: 'flex', justifyContent: 'center'}}>
+                        <button onClick={getMicrophonePermission} type="button" align="center">
                             Get Microphone
                         </button>
                     ): null}

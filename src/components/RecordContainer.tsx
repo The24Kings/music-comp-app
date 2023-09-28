@@ -1,21 +1,21 @@
 import './RecordContainer.css';
 import { useState, useRef } from "react";
-//import VideoRecorder from '../components/VideoRecorder';
-//import AudioRecorder from '../components/AudioRecorder';
+import VideoRecorder from '../components/VideoRecorder';
+import AudioRecorder from '../components/AudioRecorder';
 interface ContainerProps {
   name: string;
 }
 
 const RecordContainer: React.FC<ContainerProps> = ({ name }) => {
-    //let [recordOption, setRecordOption] = useState("video");
-    //const toggleRecordOption = (type) => {
-    //    return () => {
-    //        setRecordOption(type);
-    //    };
-    //};
+    let [recordOption, setRecordOption] = useState("video");
+    const toggleRecordOption = (type) => {
+        return () => {
+            setRecordOption(type);
+        };
+    };
 
     return (
-    /*
+
         <div>
             <h1>React Media Recorder</h1>
             <div className="button-flex">
@@ -30,7 +30,7 @@ const RecordContainer: React.FC<ContainerProps> = ({ name }) => {
                 {recordOption === "video" ? <VideoRecorder /> : <AudioRecorder />}
             </div>
         </div>
-    */
+
         <div className='container'>
             <strong>{name}</strong>
             <p>Help me</p>

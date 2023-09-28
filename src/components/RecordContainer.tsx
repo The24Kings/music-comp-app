@@ -31,10 +31,10 @@ const RecordContainer: React.FC<ContainerProps> = ({ name }) => {
             </div>
         </div>
 
-        <div className='container'>
+        /*<div className='container'>
             <strong>{name}</strong>
             <p>Help me</p>
-        </div>
+        </div>*/
     );
 };
 

@@ -6,7 +6,8 @@ import {
     IonTitle,
     IonToolbar,
     IonButton,
-    IonButtons
+    IonButtons,
+    IonMenuButton
 } from '@ionic/react';
 
 import {
@@ -16,25 +17,25 @@ import {
 
 import MetronomeContainer from '../components/MetronomeContainer';
 
-const Metronome: React.FC = () => {
+interface MetronomeProps {
+    selectedSound: string;
+}
+
+const Metronome: React.FC<MetronomeProps> = ({ selectedSound }) => {
     return (
         <IonPage>
-            <IonContent fullscreen>
-                <IonHeader>
-                    <IonToolbar>
-                        <IonTitle size="large">Metronome</IonTitle>
-                        <IonButtons slot="primary">
-                            <IonButton>
-                                <IonIcon slot="icon-only" ios={ellipsisHorizontal} md={ellipsisVertical}></IonIcon>
-                            </IonButton>
-                        </IonButtons>
-                    </IonToolbar>
-                </IonHeader>
+            <IonToolbar>
+                <IonButtons slot="start">
+                    <IonMenuButton autoHide={false}></IonMenuButton>
+                </IonButtons>
+                <IonTitle size="large">Metronome</IonTitle>
+            </IonToolbar>
 
-                <MetronomeContainer name="Metronome page" />
+            <IonContent fullscreen>
+                <MetronomeContainer name="Metronome page" selectedSound={selectedSound} />
             </IonContent>
         </IonPage>
-  );
+    );
 };
 
 export default Metronome;

@@ -2,7 +2,9 @@ import './MetronomeContainer.css';
 
 import React, { useState, useEffect, useRef } from 'react';
 import { IonButton, IonButtons, IonContent, IonInput, IonItem, IonLabel, IonToolbar } from '@ionic/react';
-import sound from "/assets/sounds/metronomeSound2.mp3";
+import sound1 from "/assets/sounds/metronomeSound1.mp3";
+import sound2 from "/assets/sounds/metronomeSound2.mp3";
+import sound3 from "/assets/sounds/metronomeSound3.mp3";
 
 interface ContainerProps {
     name: string;
@@ -63,8 +65,6 @@ const MetronomeContainer: React.FC<ContainerProps> = ({ name }) => {
         };
     }, [isRunning, direction, imagePaths.length, speed]);
 
-// ...
-
 
     // Handle BPM input change
     const handleBpmChange = (event: CustomEvent) => {
@@ -115,7 +115,7 @@ const MetronomeContainer: React.FC<ContainerProps> = ({ name }) => {
                 </IonItem>
             </div>
             <audio ref={audioRef}>
-                <source src={sound} type="audio/mpeg" />
+                <source src={sound2} type="audio/mpeg" />
                 Your browser does not support the audio element.
             </audio>
         </IonContent>

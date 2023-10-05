@@ -6,7 +6,8 @@ import {
     IonTitle,
     IonToolbar,
     IonButton,
-    IonButtons
+    IonButtons,
+    IonMenuButton
 } from '@ionic/react';
 
 import {
@@ -23,11 +24,11 @@ const SavedFiles: React.FC = () => {
                 <IonHeader>
                     <IonToolbar>
                         <IonTitle size="large">Saved Files</IonTitle>
-                        <IonButtons slot="primary">
-                            <IonButton>
-                                <IonIcon slot="icon-only" ios={ellipsisHorizontal} md={ellipsisVertical}></IonIcon>
-                            </IonButton>
-                        </IonButtons>
+                       
+                            <IonButtons slot="start">
+                                <IonMenuButton autoHide={false}></IonMenuButton>
+                            </IonButtons>
+                      
                     </IonToolbar>
                 </IonHeader>
 

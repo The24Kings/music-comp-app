@@ -1,18 +1,26 @@
-import { Redirect, Route } from 'react-router-dom';
 import {
-  IonApp,
-  IonIcon,
-  IonLabel,
-  IonRouterOutlet,
-  IonTabBar,
-  IonTabButton,
-  IonTabs,
-  setupIonicReact
+    IonApp,
+    IonRouterOutlet,
+    IonTabBar,
+    IonTabButton,
+    IonTabs,
+    IonMenu,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonContent,
+    IonList,
+    IonMenuToggle,
+    IonLabel,
+    IonItem,
+    IonIcon,
+    setupIonicReact
 } from '@ionic/react';
 
 import React from 'react';
 
 import { IonReactRouter } from '@ionic/react-router';
+import { Redirect, Route } from 'react-router-dom';
 
 /* Main Tabs for the app */
 import {
@@ -46,9 +54,35 @@ import './theme/variables.css';
 
 setupIonicReact();
 
+
 const App: React.FC = () => (
   <IonApp>
-    <IonReactRouter>
+        <IonReactRouter>
+
+            <IonMenu contentId="main-content" type="overlay">
+                <IonHeader>
+                    <IonToolbar>
+                        <IonTitle>Settings</IonTitle>
+                    </IonToolbar>
+                </IonHeader>
+                <IonContent>
+                    <IonList>
+                        <IonMenuToggle auto-hide="false">
+                            <IonItem>
+                                <IonLabel>Settings Content</IonLabel>
+                            </IonItem>
+                        </IonMenuToggle>
+                    </IonList>
+                </IonContent>
+            </IonMenu>
+
+            <IonRouterOutlet id="main-content">
+                <Route path="/recorder" component={Recorder} exact />
+                <Route path="/metronome" component={Metronome} exact />
+                <Route path="/saved" component={SavedFiles} exact />
+                <Redirect from="/" to="/recorder" exact />
+            </IonRouterOutlet>
+
       <IonTabs>
         <IonRouterOutlet>
           <Route exact path="/recorder">

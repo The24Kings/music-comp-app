@@ -9,62 +9,31 @@ interface ContainerProps {
 }
 
 const MetronomeContainer: React.FC<ContainerProps> = ({ name }) => {
-    const imagePaths = [
-        '../assets/pictures/metronome left lower.jpg',
-        '../assets/pictures/metronome left upper.jpg',
-        '../assets/pictures/metronome middle.jpg',
-        '../assets/pictures/metronome right upper.jpg',
-        '../assets/pictures/metronome right lower.jpg',
-    ];
+    const metronomeBase = '../assets/pictures/metronome.svg';
+    const metronomeArm = '../assets/pictures/arm.svg';
 
-    const [currentImageIndex, setCurrentImageIndex] = useState(0);
-    const [direction, setDirection] = useState(1); // 1 for forward, -1 for backward
-    const [isRunning, setIsRunning] = useState(false);
+    const [isRunning, setIsRunning] = useState(true);
+    const [rads, setRads] = useState(0);
+    const [frequency, setFrequency] = useState(120/60);
     const [bpm, setBpm] = useState(60); // Initial BPM value
     const audioRef = useRef<HTMLAudioElement | null>(null);
-   
 
-    const speed = ((60 / bpm) *1000) /4 ; // (beat) * 1000 miliseconds / 4 frames
+    const amplitude = 10; // Smoothness of the animation -> Placeholder
+    const time = Date.now();
 
- 
-
+    //Thinks it is event driven, maybe, please look into
     useEffect(() => {
-        let intervalId: NodeJS.Timeout | undefined;
+         if(isRunning) {
+            const currentTime = Date.now();
 
-        if (isRunning) {
-            intervalId = setInterval(() => {
-                setCurrentImageIndex((prevIndex) => {
-                    let nextIndex = prevIndex + direction;
+            const frequency = bpm / 60;
+            const timeDelta = currentTime - time; // In milliseconds
 
-                    if (nextIndex >= imagePaths.length) {
-                        nextIndex = imagePaths.length - 2;
-                        setDirection(-1);
-                    } else if (nextIndex < 0) {
-                        nextIndex = 1;
-                        setDirection(1);
-                    }
+            const angle = Math.asin(Math.sin(timeDelta - (0.5 / frequency) * (frequency * Math.PI) + (Math.PI / 2))) * (2 / Math.PI);
 
-                    // Check if the current image is "middle.jpg" and play the sound
-                    if (nextIndex === 2) {
-                        if (audioRef.current) {
-                            audioRef.current.play();
-                        }
-                    }
-
-                    return nextIndex;
-                });
-            }, speed);
-        }
-
-        return () => {
-            if (intervalId) {
-                clearInterval(intervalId);
-            }
-        };
-    }, [isRunning, direction, imagePaths.length, speed]);
-
-// ...
-
+            setRads(angle * (Math.PI / 4));
+         }
+    }, [isRunning, frequency, rads]);
 
     // Handle BPM input change
     const handleBpmChange = (event: CustomEvent) => {
@@ -76,34 +45,46 @@ const MetronomeContainer: React.FC<ContainerProps> = ({ name }) => {
 
     return (
         <IonContent>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <div style={
+                {
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center'
+                }
+            }>
                 <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
                     <img
-                        src={`assets/${imagePaths[currentImageIndex]}`}
-                        alt="Metronome"
-                        style={{ maxWidth: '90%', maxHeight: '50vh', width: 'auto' }} 
-                    />
+                        src={`${metronomeArm}`}
+                        alt="Metronome Arm"
+                        style={
+                            {
+                                maxWidth: '90%',
+                                maxHeight: '50vh',
+                                width: 'auto',
+                                transform: `rotate(${rads}rad)`
+                            }
+                        }/>
                 </div>
-             
-                    <IonButtons slot="primary" className="ion-text-center">
-                        <IonButton                                //Start Button
-                            onClick={() => setIsRunning(true)}
-                            disabled={isRunning}
-                            shape="round"
-                            style={{ fontSize: '4vw', padding: '2vh 4vw' }} 
-                        >
-                            Start
-                        </IonButton>
 
-                        <IonButton                                //Stop Button
-                            onClick={() => setIsRunning(false)}
-                            disabled={!isRunning}
-                            shape="round"
-                            style={{ fontSize: '4vw', padding: '2vh 4vw' }} 
-                        >
-                            Stop
-                        </IonButton>
-                    </IonButtons>
+                <IonButtons slot="primary" className="ion-text-center">
+                    <IonButton                                //Start Button
+                        onClick={() => setIsRunning(true)}
+                        disabled={isRunning}
+                        shape="round"
+                        style={{ fontSize: '4vw', padding: '2vh 4vw' }}
+                    >
+                        Start
+                    </IonButton>
+
+                    <IonButton                                //Stop Button
+                        onClick={() => setIsRunning(false)}
+                        disabled={!isRunning}
+                        shape="round"
+                        style={{ fontSize: '4vw', padding: '2vh 4vw' }}
+                    >
+                        Stop
+                    </IonButton>
+                </IonButtons>
                 <IonItem>
                     <IonLabel position="floating">BPM</IonLabel>
                     <IonInput
@@ -119,6 +100,7 @@ const MetronomeContainer: React.FC<ContainerProps> = ({ name }) => {
                 Your browser does not support the audio element.
             </audio>
         </IonContent>
+
     );
 };
 

@@ -8,9 +8,10 @@ import sound3 from "/assets/sounds/metronomeSound3.mp3";
 
 interface ContainerProps {
     name: string;
+    selectedSound: string;
 }
 
-const MetronomeContainer: React.FC<ContainerProps> = ({ name }) => {
+const MetronomeContainer: React.FC<ContainerProps> = ({ selectedSound, name }) => {
     const imagePaths = [
         '../assets/pictures/metronome left lower.jpg',
         '../assets/pictures/metronome left upper.jpg',
@@ -24,6 +25,11 @@ const MetronomeContainer: React.FC<ContainerProps> = ({ name }) => {
     const [isRunning, setIsRunning] = useState(false);
     const [bpm, setBpm] = useState(60); // Initial BPM value
     const audioRef = useRef<HTMLAudioElement | null>(null);
+    const soundMap: { [key: string]: string } = {
+        sound1: sound1,
+        sound2: sound2,
+        sound3: sound3,
+    };
    
 
     const speed = ((60 / bpm) *1000) /4 ; // (beat) * 1000 miliseconds / 4 frames
@@ -48,8 +54,20 @@ const MetronomeContainer: React.FC<ContainerProps> = ({ name }) => {
 
                     // Check if the current image is "middle.jpg" and play the sound
                     if (nextIndex === 2) {
+                        console.log('Selected Sound Path:', soundMap[selectedSound]);
                         if (audioRef.current) {
-                            audioRef.current.play();
+                            // Update the audio source
+                            audioRef.current.src = soundMap[selectedSound];
+
+                            // Listen for the completion of the 'load' operation
+                            audioRef.current.addEventListener('loadeddata', () => {
+                                // Once loaded, play the audio
+                                audioRef.current!.play();
+                            
+                            });
+
+                            // Trigger the 'load' operation
+                            audioRef.current.load();
                         }
                     }
 
@@ -63,7 +81,8 @@ const MetronomeContainer: React.FC<ContainerProps> = ({ name }) => {
                 clearInterval(intervalId);
             }
         };
-    }, [isRunning, direction, imagePaths.length, speed]);
+
+    }, [isRunning, direction, imagePaths.length, speed, soundMap, selectedSound]);
 
 
     // Handle BPM input change
@@ -115,7 +134,7 @@ const MetronomeContainer: React.FC<ContainerProps> = ({ name }) => {
                 </IonItem>
             </div>
             <audio ref={audioRef}>
-                <source src={sound2} type="audio/mpeg" />
+                <source src={soundMap[selectedSound]} type="audio/mpeg" />
                 Your browser does not support the audio element.
             </audio>
         </IonContent>

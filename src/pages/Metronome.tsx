@@ -14,7 +14,7 @@ import {
     ellipsisHorizontal,
     ellipsisVertical
 } from 'ionicons/icons';
-
+import React, { useState, useEffect } from 'react';
 import MetronomeContainer from '../components/MetronomeContainer';
 
 interface MetronomeProps {
@@ -22,6 +22,10 @@ interface MetronomeProps {
 }
 
 const Metronome: React.FC<MetronomeProps> = ({ selectedSound }) => {
+    useEffect(() => {
+        console.log('Selected Sound in Metronome:', selectedSound);
+    }, [selectedSound]);
+
     return (
         <IonPage>
             <IonToolbar>
@@ -32,7 +36,8 @@ const Metronome: React.FC<MetronomeProps> = ({ selectedSound }) => {
             </IonToolbar>
 
             <IonContent fullscreen>
-                <MetronomeContainer name="Metronome page" selectedSound={selectedSound} />
+                {/* Pass the selectedSound prop with a default value */}
+                <MetronomeContainer selectedSound={selectedSound} name="Metronome page" />
             </IonContent>
         </IonPage>
     );

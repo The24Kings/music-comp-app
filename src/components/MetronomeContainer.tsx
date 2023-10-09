@@ -49,8 +49,8 @@ const MetronomeContainer: React.FC<ContainerProps> = ({ name }) => {
 
     const [isRunning, setIsRunning] = useState(false);
     const [bpm, setBpm] = useState(120); // Initial BPM value
-    const audioRef = useRef<HTMLAudioElement | null>(null);
-
+    const audioRef = useRef<HTMLAudioElement>(null);
+    const [prevAngle, setPrev] = useState(0);
     const time = performance.now() / 1000;
     const armRef = useRef<HTMLImageElement>(null)
 
@@ -73,9 +73,18 @@ const MetronomeContainer: React.FC<ContainerProps> = ({ name }) => {
 */
        //TODO: Play sound when angle goes from positive to negative
 
-        const rads = angle * (Math.PI / 4);
+        const degrees = angle * 30;
 
-        img.style.transform = `rotate(${rads}rad)`
+        // Check if angle crossed zero
+        if (angle < 0 && prevAngle >= 0 || angle >= 0 && prevAngle < 0) {
+            if(audioRef.current) {
+                audioRef.current.play();
+            }
+        }
+
+        setPrev(angle);
+
+        img.style.transform = `rotate(${degrees}deg)`
     }, [bpm, isRunning])
 
     // Handle BPM input change

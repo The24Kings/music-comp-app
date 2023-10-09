@@ -61,7 +61,6 @@ const MetronomeContainer: React.FC<ContainerProps> = ({ name }) => {
 
         if (!isRunning) return
 
-        //TODO: IDK where the issue is, but when bpm is 120 it looks "normal"
         const frequency = bpm / 60.0;
 
         const angle = Math.sin(time * Math.PI / 60 * bpm);
@@ -71,8 +70,6 @@ const MetronomeContainer: React.FC<ContainerProps> = ({ name }) => {
 
         const angle = Math.asin(Math.sin(time * adjustFrequency)) * clampAmplitude;
 */
-       //TODO: Play sound when angle goes from positive to negative
-
         const degrees = angle * 30;
 
         // Check if angle crossed zero

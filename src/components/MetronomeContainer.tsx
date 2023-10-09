@@ -6,7 +6,6 @@ import sound from "/assets/sounds/metronomeSound2.mp3";
 
 interface ContainerProps {
     name: string;
-    time: float;
 }
 
 export const useAnimationFrame = (
@@ -43,16 +42,16 @@ export const useAnimationFrame = (
 }
 
 const MetronomeContainer: React.FC<ContainerProps> = ({ name }) => {
+    //TODO: Change these to update based on user settings -> light | dark mode
+
     const metronomeBase = '../assets/pictures/metronome-grey.svg';
     const metronomeArm = '../assets/pictures/arm-white.svg';
 
     const [isRunning, setIsRunning] = useState(false);
-    const [rads, setRads] = useState(0);
     const [bpm, setBpm] = useState(120); // Initial BPM value
-    const [frequency, setFrequency] = useState(bpm/60);
     const audioRef = useRef<HTMLAudioElement | null>(null);
 
-    const time = Date.now();
+    const time = performance.now() / 1000;
     const armRef = useRef<HTMLImageElement>(null)
 
     useAnimationFrame(({ time }) => {
@@ -62,18 +61,17 @@ const MetronomeContainer: React.FC<ContainerProps> = ({ name }) => {
 
         if (!isRunning) return
 
-        const currentTime = Date.now();
-
-        // IDK where the issue is, but when bpm is 120 it looks "normal"
+        //TODO: IDK where the issue is, but when bpm is 120 it looks "normal"
         const frequency = bpm / 60.0;
-        const timeDelta = currentTime - time;
 
+        const angle = Math.sin(time * Math.PI / 60 * bpm);
+/*
         const adjustFrequency = frequency * Math.PI;
         const clampAmplitude = 2.0 / Math.PI;
 
-        const angle = Math.asin(Math.sin(timeDelta * adjustFrequency)) * clampAmplitude;
-
-       // Play sound when angle goes from positive to negative
+        const angle = Math.asin(Math.sin(time * adjustFrequency)) * clampAmplitude;
+*/
+       //TODO: Play sound when angle goes from positive to negative
 
         const rads = angle * (Math.PI / 4);
 

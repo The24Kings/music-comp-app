@@ -22,6 +22,11 @@
 .container a {
   text-decoration: none;
 }
+main {
+  display: flex;
+  justifyContent: center;
+  align-items: center;
+}
 .button-flex {
   display: flex;
   justify-content: center;
@@ -32,7 +37,11 @@
 .video-controls {
     margin-bottom: 20px;
     display: flex;
-    justifyContent: center;
+    justifyContent: right;
+}
+.audio-controls button {
+   display: float;
+   align: center;
 }
 .audio-player,
 .video-player {
@@ -57,6 +66,7 @@
     height: 400px;
     width: 800px;
 }
+
 body {
   margin: 0;
   display: flex;
@@ -64,8 +74,17 @@ body {
   min-width: 320px;
   min-height: 100vh;
 }
+/*
 button
 {
     width: 150px;
     height: 50px;
+    background: blue;
+}*/
+button
+{
+    background: #5fb5fe;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
 }

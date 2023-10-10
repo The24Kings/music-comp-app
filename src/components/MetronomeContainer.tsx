@@ -3,10 +3,14 @@ import React, { useState, useEffect, useReducer, useRef, useCallback } from 'rea
 
 import Roundy from 'roundy';
 import { IonButton, IonButtons, IonContent, IonInput, IonItem, IonLabel, IonToolbar } from '@ionic/react';
-import sound from "/assets/sounds/metronomeSound2.mp3";
+import sound1 from "/assets/sounds/metronomeSound1.mp3";
+import sound2 from "/assets/sounds/metronomeSound2.mp3";
+import sound3 from "/assets/sounds/metronomeSound3.mp3";
+
 
 interface ContainerProps {
     name: string;
+    selectedSound: string;
 }
 
 export const useAnimationFrame = (
@@ -42,7 +46,7 @@ export const useAnimationFrame = (
     /* eslint-enable react-hooks/rules-of-hooks */
 }
 
-const MetronomeContainer: React.FC<ContainerProps> = ({ name }) => {
+const MetronomeContainer: React.FC<ContainerProps> = ({ selectedSound, name }) => {
     //TODO: Change these to update based on user settings -> light | dark mode
 
     const metronomeBase = '../assets/pictures/metronome-grey.svg';
@@ -54,6 +58,11 @@ const MetronomeContainer: React.FC<ContainerProps> = ({ name }) => {
     const [prevAngle, setPrev] = useState(0);
     const time = performance.now() / 1000;
     const armRef = useRef<HTMLImageElement>(null)
+    const soundMap: { [key: string]: string } = {
+        sound1: sound1,
+        sound2: sound2,
+        sound3: sound3,
+    };
 
     useAnimationFrame(({ time }) => {
         const img = armRef.current
@@ -71,15 +80,26 @@ const MetronomeContainer: React.FC<ContainerProps> = ({ name }) => {
 
         // Check if angle crossed zero
         if (angle < 0 && prevAngle >= 0 || angle >= 0 && prevAngle < 0) {
-            if(audioRef.current) {
-                audioRef.current.play();
+            if (audioRef.current) {
+                // Update the audio source
+                audioRef.current.src = soundMap[selectedSound];
+
+                // Listen for the completion of the 'load' operation
+                audioRef.current.addEventListener('loadeddata', () => {
+                    // Once loaded, play the audio
+                    audioRef.current!.play();
+
+                });
+
+                // Trigger the 'load' operation
+                audioRef.current.load();
             }
         }
 
         setPrev(angle);
 
         img.style.transform = `rotate(${degrees}deg)`
-    }, [bpm, isRunning])
+    }, [bpm, isRunning, soundMap, selectedSound])
 
     // Handle BPM input change
     const handleBpmChange = (event: CustomEvent) => {
@@ -187,7 +207,7 @@ const MetronomeContainer: React.FC<ContainerProps> = ({ name }) => {
                 </div>
 
             <audio ref={audioRef}>
-                <source src={sound} type="audio/mpeg" />
+                <source src={soundMap[selectedSound]} type="audio/mpeg" />
                 Your browser does not support the audio element.
             </audio>
         </IonContent>

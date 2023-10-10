@@ -72,7 +72,6 @@ const RecordContainer: React.FC<ContainerProps> = ({ name })  => {
 
     return (
         <div>
-            <h2>Audio Recorder</h2>
             <main>
                 <div className="audio-controls">
 {/*                     {!permission ? ( */}

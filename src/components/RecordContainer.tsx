@@ -9,11 +9,12 @@ import { useState, useRef } from "react";
 import "./RecordContainer.css"
 import { FaBeer } from 'react-icons/fa';
 const mimeType = "audio/webm";
+
 interface ContainerProps {
   name: string;
 }
 
-const RecordContainer = () => {
+const RecordContainer: React.FC<ContainerProps> = ({ name })  => {
     const [permission, setPermission] = useState(false);
     const [stream, setStream] = useState(null);
     // const [permission, setPermission] = useState(false);
@@ -42,7 +43,7 @@ const RecordContainer = () => {
     const startRecording = async () => {
       setRecordingStatus("recording");
       //create new Media recorder instance using the stream
-      const media = new MediaRecorder(stream, { type: mimeType });
+      const media = new MediaRecorder(stream);
       //set the MediaRecorder instance to the mediaRecorder ref
       mediaRecorder.current = media;
       //invokes the start method to start the recording process
@@ -71,14 +72,14 @@ const RecordContainer = () => {
 
     return (
         <div>
-            <h2 align="center">Audio Recorder</h2>
+            <h2>Audio Recorder</h2>
             <main>
                 <div className="audio-controls">
 {/*                     {!permission ? ( */}
                         <img id="object"
                             src='./resources/button.png'
                         />
-                        <button onClick={getMicrophonePermission} type="button" align="center" label="Get Microphone Permission">
+                        <button onClick={getMicrophonePermission} type="button" aria-label="Get Microphone Permission">
                             Get Microphone Permissions
 
                         </button>
@@ -88,8 +89,8 @@ const RecordContainer = () => {
                         Start Recording
                     </button>
                     {recordingStatus === "recording" ? (
-                        <div class="progress">
-                          <div class="progress__bar"></div>
+                        <div className="progress">
+                          <div className="progress__bar"></div>
                         </div>
 
                     ) : null}

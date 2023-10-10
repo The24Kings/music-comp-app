@@ -67,9 +67,7 @@ const RecordContainer = () => {
          setAudio(audioUrl);
          setAudioChunks([]);
       };
-       const Pulse = require('react-native-pulse').default;
     };
-//style={{ display: 'flex', justifyContent: 'center', width: '100%' }}
 
     return (
         <div>
@@ -79,8 +77,6 @@ const RecordContainer = () => {
 {/*                     {!permission ? ( */}
                         <img id="object"
                             src='./resources/button.png'
-
-
                         />
                         <button onClick={getMicrophonePermission} type="button" align="center" label="Get Microphone Permission">
                             Get Microphone Permissions

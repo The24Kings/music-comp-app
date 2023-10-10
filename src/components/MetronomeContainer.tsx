@@ -10,17 +10,17 @@ interface ContainerProps {
 }
 
 export const useAnimationFrame = (
-  cb: (arg: { time: number; delta: number }) => void,
-  deps: readonly unknown[],
+    cb: (arg: { time: number; delta: number }) => void,
+    deps: readonly unknown[],
 ) => {
-  /* eslint-disable react-hooks/rules-of-hooks */
-  if (typeof window === 'undefined') return
+    /* eslint-disable react-hooks/rules-of-hooks */
+    if (typeof window === 'undefined') return
 
-  const frame = useRef<number>()
-  const last = useRef(performance.now())
-  const init = useRef(performance.now())
+    const frame = useRef<number>()
+    const last = useRef(performance.now())
+    const init = useRef(performance.now())
 
-  const animate = useCallback(() => {
+    const animate = useCallback(() => {
     const now = performance.now()
     const time = (now - init.current) / 1_000
     const delta = (now - last.current) / 1_000
@@ -30,16 +30,16 @@ export const useAnimationFrame = (
 
     last.current = now
     frame.current = requestAnimationFrame(animate)
-  }, [cb])
+    }, [cb])
 
-  useEffect(() => {
-    frame.current = requestAnimationFrame(animate)
-    return () => {
-      if (frame.current) cancelAnimationFrame(frame.current)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [animate, ...deps])
-  /* eslint-enable react-hooks/rules-of-hooks */
+    useEffect(() => {
+        frame.current = requestAnimationFrame(animate)
+        return () => {
+            if (frame.current) cancelAnimationFrame(frame.current)
+        }
+        //eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [animate, ...deps])
+    /* eslint-enable react-hooks/rules-of-hooks */
 }
 
 const MetronomeContainer: React.FC<ContainerProps> = ({ name }) => {
@@ -66,12 +66,7 @@ const MetronomeContainer: React.FC<ContainerProps> = ({ name }) => {
         const frequency = bpm / 60.0;
 
         const angle = Math.sin(time * Math.PI / 60 * bpm);
-/*
-        const adjustFrequency = frequency * Math.PI;
-        const clampAmplitude = 2.0 / Math.PI;
 
-        const angle = Math.asin(Math.sin(time * adjustFrequency)) * clampAmplitude;
-*/
         const degrees = angle * 30;
 
         // Check if angle crossed zero
@@ -119,9 +114,7 @@ const MetronomeContainer: React.FC<ContainerProps> = ({ name }) => {
                         ref={armRef}
                         style={
                             {
-                                position: `absolute`,
-                                top: `0`,
-                                bottom: `0`
+                                position: `absolute`
                             }
                         }/>
                 </div>

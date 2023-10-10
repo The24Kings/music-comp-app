@@ -1,6 +1,7 @@
 import './MetronomeContainer.css';
+import React, { useState, useEffect, useReducer, useRef, useCallback } from 'react';
 
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import Roundy from 'roundy';
 import { IonButton, IonButtons, IonContent, IonInput, IonItem, IonLabel, IonToolbar } from '@ionic/react';
 import sound from "/assets/sounds/metronomeSound2.mp3";
 
@@ -56,6 +57,7 @@ const MetronomeContainer: React.FC<ContainerProps> = ({ name }) => {
 
     useAnimationFrame(({ time }) => {
         const img = armRef.current
+
 
         if (!img) return
 
@@ -143,16 +145,54 @@ const MetronomeContainer: React.FC<ContainerProps> = ({ name }) => {
                         Stop
                     </IonButton>
                 </IonButtons>
-                <IonItem>
-                    <IonLabel position="floating">BPM</IonLabel>
-                    <IonInput
-                        type="number"
-                        step="0.1"
-                        value={bpm.toString()}
-                        onIonChange={handleBpmChange}
-                    ></IonInput>
-                </IonItem>
-            </div>
+                </div>
+                <div className="slider">
+                    <Roundy
+                        value={bpm}
+                        min={5}
+                        max={400}
+                        rotationOffset={90}
+                        stepSize={1}
+                        color="magenta"
+                        bgColor="gray"
+                        strokeWidth={10}
+                        radius={175}
+                        onChange={bpm => setBpm(bpm)}
+                    />
+                </div>
+                <div className="label">
+                    <h3>BPM: <br/>{bpm}</h3>
+                </div>
+                <div className="bpmButtons">
+                    <IonButtons slot="primary" className="ion-text-center">
+                        <IonButton
+                            shape="round"
+                            style={{ fontSize: '4vw', padding: '2vh 4vw' }}
+                            onClick={() => setBpm(bpm - 1)}
+                        >
+                            -
+                        </IonButton>
+
+                        <IonItem>
+                            <IonLabel position="floating">BPM</IonLabel>
+                            <IonInput
+                                type="number"
+                                step="0.1"
+                                value={bpm.toString()}
+                                onIonChange={handleBpmChange}
+                            ></IonInput>
+                        </IonItem>
+
+                        <IonButton
+                            shape="round"
+                            style={{ fontSize: '4vw', padding: '2vh 4vw' }}
+                            onClick={() => setBpm(bpm + 1)}
+                        >
+                            +
+                        </IonButton>
+                    </IonButtons>
+                </div>
+
             <audio ref={audioRef}>
                 <source src={sound} type="audio/mpeg" />
                 Your browser does not support the audio element.

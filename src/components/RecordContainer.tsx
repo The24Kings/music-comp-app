@@ -7,8 +7,15 @@ interface ContainerProps {
 }
 
 const RecordContainer: React.FC<ContainerProps> = ({ name }) => {
+    const [permission, setPermission] = useState(false);
+    const [stream, setStream] = useState(null);
+    const mediaRecorder = useRef(null);
+    const [recordingStatus, setRecordingStatus] = useState("inactive");
+    const [audioChunks, setAudioChunks] = useState([]);
+    const [audio, setAudio] = useState(null);
+
     let [recordOption, setRecordOption] = useState("video");
-    const toggleRecordOption = (type) => {
+    const toggleRecordOption = (type: any) => {
         return () => {
             setRecordOption(type);
         };

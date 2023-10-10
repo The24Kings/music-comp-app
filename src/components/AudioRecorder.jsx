@@ -5,10 +5,8 @@ const mimeType = "audio/webm";
 const AudioRecorder = () => {
     const [permission, setPermission] = useState(false);
     const [stream, setStream] = useState(null);
-    // const [permission, setPermission] = useState(false);
     const mediaRecorder = useRef(null);
     const [recordingStatus, setRecordingStatus] = useState("inactive");
-    // const [stream, setStream] = useState(null);
     const [audioChunks, setAudioChunks] = useState([]);
     const [audio, setAudio] = useState(null);
 

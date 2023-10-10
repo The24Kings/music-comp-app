@@ -22,3 +22,44 @@
 .container a {
   text-decoration: none;
 }
+
+.main{
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+//    align-items: center;
+}
+
+.metronome{
+    display: grid;
+    grid-area: 1 / 3 / 2 / 4;
+    place-items: center;
+    width: 100%;
+}
+
+.slider{
+    display: grid;
+    grid-area: 2 / 3 / 3 / 4;
+    place-items: center;
+}
+
+.initButtons{
+    display: grid;
+    grid-area: 2 / 3 / 3 / 4;
+    justify-items: center;
+    align-items: start;
+}
+
+.label{
+    display: grid;
+    text-align: center;
+    grid-area: 2 / 3 / 3 / 4;
+    place-items: center;
+}
+
+.bpmButtons{
+    display: grid;
+    grid-area: 2 / 3 / 3 / 4;
+    justify-items: center;
+    align-items: end;
+}

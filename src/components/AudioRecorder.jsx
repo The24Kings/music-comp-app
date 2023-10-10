@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import "./RecordContainer.css"
 const mimeType = "audio/webm";
 
-export const AudioRecorder = () => {
+const AudioRecorder = () => {
     const [permission, setPermission] = useState(false);
     const [stream, setStream] = useState(null);
     // const [permission, setPermission] = useState(false);

@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import "./RecordContainer.css"
 
-export const VideoRecorder = () => {
+const VideoRecorder = () => {
     const [permission, setPermission] = useState(false);
     const [stream, setStream] = useState(null);
 

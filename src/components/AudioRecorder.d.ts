@@ -1,3 +1,3 @@
-declare module './AudioRecorder' {
+declare module '../components/AudioRecorder' {
     export const AudioRecorder: any;
 }

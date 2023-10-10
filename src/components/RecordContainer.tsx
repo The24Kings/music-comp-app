@@ -67,39 +67,60 @@ const RecordContainer = () => {
          setAudio(audioUrl);
          setAudioChunks([]);
       };
+       const Pulse = require('react-native-pulse').default;
     };
+//style={{ display: 'flex', justifyContent: 'center', width: '100%' }}
+
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-//             <i class="fa-solid fa-microphone"></i>
+        <div>
             <h2 align="center">Audio Recorder</h2>
             <main>
-                <div className="audio-controls" style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-                    {!permission ? (
-                        <button onClick={getMicrophonePermission} type="button" align="center">
-                            <img
-                                src="./resources/microphone(1).png"
-                            />
+                <div className="audio-controls">
+{/*                     {!permission ? ( */}
+                        <img id="object"
+                            src='./resources/button.png'
+
+
+                        />
+                        <button onClick={getMicrophonePermission} type="button" align="center" label="Get Microphone Permission">
+                            Get Microphone Permissions
+
                         </button>
-                    ): null}
-                    {permission && recordingStatus === "inactive" ? (
+{/*                     ): null} */}
+{/*                     {permission && recordingStatus === "inactive" ? ( */}
                     <button onClick={startRecording} type="button">
                         Start Recording
                     </button>
-                    ) : null}
                     {recordingStatus === "recording" ? (
+                        <div class="progress">
+                          <div class="progress__bar"></div>
+                        </div>
+
+                    ) : null}
+{/*                    {recordingStatus === "recording" ? (  */}
                     <button onClick={stopRecording} type="button">
                         Stop Recording
                     </button>
-                    ) : null}
-                </div>
+{/*                     ) : null} */}
                 {audio ? (
-                  <div className="audio-container" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', width: '100%' }}>
+                    <div className="audio-container">
+                        <audio src={audio} controls></audio>
+                        <a download href={audio}>
+                            Download Recording
+                        </a>
+                    </div>
+
+                ) : null}
+                </div>
+          {/*       className="audio-container" */}
+{/*                  {audio ? (
+                  <div>
                      <audio src={audio} controls></audio>
                      <a download href={audio}>
                         Download Recording
                      </a>
                    </div>
-                ) : null}
+                ) : null} */}
             </main>
         </div>
     );

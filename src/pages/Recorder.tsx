@@ -24,11 +24,11 @@ const Recorder: React.FC = () => {
                 <IonHeader>
                     <IonToolbar>
                         <IonTitle size="large">Recorder</IonTitle>
-                     
-                            <IonButtons slot="start">
-                                <IonMenuButton autoHide={false}></IonMenuButton>
-                            </IonButtons>
-                        
+
+                        <IonButtons slot="start">
+                            <IonMenuButton autoHide={false}></IonMenuButton>
+                        </IonButtons>
+
                     </IonToolbar>
                 </IonHeader>
 

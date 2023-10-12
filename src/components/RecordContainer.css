@@ -19,10 +19,6 @@
   to {width: 100%;}
 }
 
-
-
-
-
 .container {
   text-align: center;
   position: absolute;
@@ -47,11 +43,7 @@
 .container a {
   text-decoration: none;
 }
-/*main {
-  display: flex;
-  justifyContent: center;
-  align-items: center;
-}*/
+
 .button-flex {
   display: flex;
   justify-content: center;
@@ -64,10 +56,7 @@
     flex-direction: column;
     align-items: center;
 }
-/*.audio-controls button {
-   display: float;
-   align: center;
-}*/
+
 .audio-player,
 .video-player {
     display: flex;
@@ -99,13 +88,7 @@ body {
   min-width: 320px;
   min-height: 100vh;
 }
-/*
-button
-{
-    width: 150px;
-    height: 50px;
-    background: blue;
-}*/
+
 button
 {
     background: #5fb5fe;

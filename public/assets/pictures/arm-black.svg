@@ -10,9 +10,12 @@
 	</g>
 	<g id="SVGRepo_iconCarrier">
 		<g id="Arm">
-			<path id="Shape 7" class="s0" d="m32 200v-134.1"/>
-			<path id="Shape 8" fill-rule="evenodd" class="s1" d="m20.5 65.9h22.6l7.9-41.4h-19l-18.5-0.2z"/>
+			<path id="Shape 7" class="s0" d="m32 186v-120.1"/>
+			<path id="Shape 8" fill-rule="evenodd" class="s0" d="m20.5 65.9h22.6l7.9-41.4h-19l-18.5-0.2z"/>
 			<path id="Shape 9" class="s1" d="m32 6.7v17.8"/>
+			<path id="Shape 12" class="s1" d="m124 60"/>
+			<path id="Shape 10" class="s0" d="m101 15"/>
+			<path id="Shape 11" class="s0" d="m104 52"/>
 		</g>
 	</g>
 </svg>

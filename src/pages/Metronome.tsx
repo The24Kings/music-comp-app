@@ -32,7 +32,7 @@ const Metronome: React.FC<MetronomeProps> = ({ selectedSound }) => {
                 <IonButtons slot="start">
                     <IonMenuButton autoHide={false}></IonMenuButton>
                 </IonButtons>
-                <IonTitle size="medium">Metronome</IonTitle>
+                <IonTitle size="large">Metronome</IonTitle>
             </IonToolbar>
 
             <IonContent fullscreen>

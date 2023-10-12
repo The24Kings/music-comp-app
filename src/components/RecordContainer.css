@@ -1,3 +1,24 @@
+.progress {
+  margin: 50px auto;
+  padding: 2px;
+  width: 100%;
+  max-width: 500px;
+  border: 3px solid #05e35e;
+  height: 30px;
+}
+
+.progress .progress__bar {
+  height: 100%;
+  width: 0%;
+  background-color: #05e35e;
+  animation: fill-bar 3s infinite;
+}
+
+@keyframes fill-bar {
+  from {width: 0%;}
+  to {width: 100%;}
+}
+
 .container {
   text-align: center;
   position: absolute;
@@ -22,6 +43,7 @@
 .container a {
   text-decoration: none;
 }
+
 .button-flex {
   display: flex;
   justify-content: center;
@@ -30,14 +52,15 @@
 }
 .audio-controls,
 .video-controls {
-    margin-bottom: 20px;
     display: flex;
-    justifyContent: center;
+    flex-direction: column;
+    align-items: center;
 }
+
 .audio-player,
 .video-player {
     display: flex;
-    flex-direction: column;
+    justifyContent: center;
     align-items: center;
 }
 .audio-player,
@@ -57,6 +80,7 @@
     height: 400px;
     width: 800px;
 }
+
 body {
   margin: 0;
   display: flex;
@@ -64,6 +88,22 @@ body {
   min-width: 320px;
   min-height: 100vh;
 }
-.audiocon {
 
+button
+{
+    background: #5fb5fe;
+    width: 500px;
+    height: 50px;
+    margin-bottom: 20px;
+}
+#object {
+
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+.parent
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }

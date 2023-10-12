@@ -10,10 +10,6 @@ import {
     IonMenuButton
 } from '@ionic/react';
 
-import {
-    ellipsisHorizontal,
-    ellipsisVertical
-} from 'ionicons/icons';
 import React, { useState, useEffect } from 'react';
 import MetronomeContainer from '../components/MetronomeContainer';
 

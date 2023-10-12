@@ -54,12 +54,15 @@ const MetronomeContainer: React.FC<ContainerProps> = ({ selectedSound, name }) =
     const metronomeArm = '../assets/pictures/arm-white.svg';
 
     const [isRunning, setIsRunning] = useState(false);
-    const [bpm, setBpm] = useState(130); // Initial BPM value
-    const audioRef = useRef<HTMLAudioElement>(null);
+    const [bpm, setBpm] = useState(130);
     const [prevAngle, setPrev] = useState(0);
-    const time = performance.now() / 1000;
+    const [angle, setAngle] = useState(0);
+
+    const audioRef = useRef<HTMLAudioElement>(null);
     const armRef = useRef<HTMLImageElement>(null);
     const blinkRef = useRef<HTMLDivElement>(null);
+
+    const time = performance.now() / 1000;
 
     const soundMap: { [key: string]: string } = {
         sound1: sound1,
@@ -75,7 +78,7 @@ const MetronomeContainer: React.FC<ContainerProps> = ({ selectedSound, name }) =
 
         // Calculate current angle of metronome arm
         const frequency = bpm / 60.0;
-        const angle = Math.sin(time * Math.PI / 60 * bpm);
+        setAngle(Math.sin(time * Math.PI / 60 * bpm));
         const degrees = angle * 30;
 
         // Check if angle crossed zero
@@ -110,6 +113,11 @@ const MetronomeContainer: React.FC<ContainerProps> = ({ selectedSound, name }) =
         }
     };
 
+    function rot() {
+        const img = armRef.current
+        img.style.transform = `rotate(0deg)`
+    }
+
     return (
         <IonContent>
             <div className="metronome">
@@ -131,7 +139,9 @@ const MetronomeContainer: React.FC<ContainerProps> = ({ selectedSound, name }) =
                 <IonButtons className="metronome-buttons" slot="primary">
                     <IonButton
                         className="play"
-                        onClick={() => setIsRunning(true)}
+                        onClick={() => (
+                            setIsRunning(true)
+                        )}
                         disabled={isRunning}
                         shape="round"
                     >
@@ -140,7 +150,10 @@ const MetronomeContainer: React.FC<ContainerProps> = ({ selectedSound, name }) =
 
                     <IonButton
                         className="stop"
-                        onClick={() => setIsRunning(false)}
+                        onClick={() => (
+                            setIsRunning(false),
+                            rot()
+                        )}
                         disabled={!isRunning}
                         shape="round"
                     >

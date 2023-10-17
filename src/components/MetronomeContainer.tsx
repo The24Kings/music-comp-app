@@ -1,6 +1,8 @@
 import './MetronomeContainer.css';
 import React, { useState, useEffect, useReducer, useRef, useCallback } from 'react';
-import { IonButton, IonButtons, IonContent, IonInput, IonItem, IonLabel, IonToolbar } from '@ionic/react';
+import { IonButton, IonButtons, IonContent, IonInput, IonItem, IonLabel, IonToolbar, IonIcon } from '@ionic/react';
+
+import { play, stop, remove, add } from 'ionicons/icons';
 
 import Roundy from 'roundy';
 
@@ -52,11 +54,16 @@ const MetronomeContainer: React.FC<ContainerProps> = ({ selectedSound, name }) =
     const metronomeArm = '../assets/pictures/arm-white.svg';
 
     const [isRunning, setIsRunning] = useState(false);
-    const [bpm, setBpm] = useState(130); // Initial BPM value
-    const audioRef = useRef<HTMLAudioElement>(null);
+    const [bpm, setBpm] = useState(130);
     const [prevAngle, setPrev] = useState(0);
+    const [angle, setAngle] = useState(0);
+
+    const audioRef = useRef<HTMLAudioElement>(null);
+    const armRef = useRef<HTMLImageElement>(null);
+    const blinkRef = useRef<HTMLDivElement>(null);
+
     const time = performance.now() / 1000;
-    const armRef = useRef<HTMLImageElement>(null)
+
     const soundMap: { [key: string]: string } = {
         sound1: sound1,
         sound2: sound2,
@@ -71,7 +78,7 @@ const MetronomeContainer: React.FC<ContainerProps> = ({ selectedSound, name }) =
 
         // Calculate current angle of metronome arm
         const frequency = bpm / 60.0;
-        const angle = Math.sin(time * Math.PI / 60 * bpm);
+        setAngle(Math.sin(time * Math.PI / 60 * bpm));
         const degrees = angle * 30;
 
         // Check if angle crossed zero
@@ -106,87 +113,103 @@ const MetronomeContainer: React.FC<ContainerProps> = ({ selectedSound, name }) =
         }
     };
 
+    function rot() {
+        const img = armRef.current
+        img.style.transform = `rotate(0deg)`
+    }
+
     return (
         <IonContent>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-                     <img
+            <div className="metronome">
+                <div className="metronome-body">
+                     <img className="metronome-base"
                         src={`${metronomeBase}`}
                         alt="Metronome"
-                        style={{ position: `relative` }}
                     />
                     <img
+                        className="metronome-arm"
                         src={`${metronomeArm}`}
                         alt="Metronome Arm"
                         ref={armRef}
-                        style={{ position: `absolute` }}
                     />
                 </div>
 
-                <IonButtons slot="primary" className="ion-text-center">
-                    <IonButton                                //Start Button
-                        onClick={() => setIsRunning(true)}
+                <div className="blink" ref={blinkRef}></div>
+
+                <IonButtons className="metronome-buttons" slot="primary">
+                    <IonButton
+                        className="play"
+                        onClick={() => (
+                            setIsRunning(true)
+                        )}
                         disabled={isRunning}
                         shape="round"
-                        style={{ fontSize: '2vw', padding: '2vh 4vw' }}
                     >
-                        Start
+                        <IonIcon icon={play}></IonIcon>
                     </IonButton>
 
-                    <IonButton                                //Stop Button
-                        onClick={() => setIsRunning(false)}
+                    <IonButton
+                        className="stop"
+                        onClick={() => (
+                            setIsRunning(false),
+                            rot()
+                        )}
                         disabled={!isRunning}
                         shape="round"
-                        style={{ fontSize: '2vw', padding: '2vh 4vw' }}
                     >
-                        Stop
+                        <IonIcon icon={stop}></IonIcon>
                     </IonButton>
                 </IonButtons>
             </div>
-                <div className="slider">
-                    <Roundy
-                        value={bpm}
-                        min={5}
-                        max={250}
-                        rotationOffset={90}
-                        stepSize={5}
-                        color="red"
-                        bgColor="gray"
-                        strokeWidth={10}
-                        radius={100}
-                        onChange={bpm => setBpm(bpm)} // Change to onAfterChange
-                    />
-                </div>
 
-                <div className="bpmButtons">
-                    <IonButtons slot="primary" className="ion-text-center">
-                        <IonButton
-                            shape="round"
-                            style={{ fontSize: '4vw', padding: '2vh 4vw' }}
-                            onClick={() => setBpm(bpm - 1)}
-                        >
-                            -
-                        </IonButton>
+            <div className="slider">
+                <Roundy
+                    value={bpm}
+                    min={5}
+                    max={250}
+                    rotationOffset={90}
+                    stepSize={5}
+                    color="red"
+                    bgColor="gray"
+                    strokeWidth={10}
+                    radius={100}
+                    onChange={bpm => setBpm(bpm)}
+                />
+            </div>
 
-                        <IonItem>
-                            <IonLabel position="floating">BPM</IonLabel>
-                            <IonInput
-                                type="number"
-                                step="0.1"
-                                value={bpm.toString()}
-                                onIonChange={handleBpmChange}
-                            ></IonInput>
-                        </IonItem>
+            <div>
+                <IonButtons className="bpm-buttons"  slot="primary">
+                    <IonButton
+                        className="remove"
+                        shape="round"
+                        onClick={() => setBpm(bpm - 1)}
+                    >
+                        <IonIcon slot="icon-only" icon={remove}></IonIcon>
+                    </IonButton>
 
-                        <IonButton
-                            shape="round"
-                            style={{ fontSize: '4vw', padding: '2vh 4vw' }}
-                            onClick={() => setBpm(bpm + 1)}
-                        >
-                            +
-                        </IonButton>
-                    </IonButtons>
-                </div>
+                    <IonItem>
+                        <IonInput
+                            className="bpm-input"
+                            label="BPM"
+                            labelPlacement="end"
+                            type="number"
+                            step="0.1"
+                            value={bpm}
+                            min={5}
+                            max={250}
+                            onIonChange={handleBpmChange}
+                        ></IonInput>
+                    </IonItem>
+
+                    <IonButton
+                        className="add"
+                        shape="round"
+                        onClick={() => setBpm(bpm + 1)}
+                    >
+                        <IonIcon slot="icon-only" icon={add}></IonIcon>
+                    </IonButton>
+                </IonButtons>
+            </div>
 
             <audio ref={audioRef}>
                 <source src={soundMap[selectedSound]} type="audio/mpeg" />

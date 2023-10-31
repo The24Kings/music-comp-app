@@ -10,12 +10,12 @@ import { Redirect, Route } from 'react-router-dom';
 
 /* Main Tabs for the app */
 import {
-    mic, alarm, download
+    mic, alarm, pulse
 } from 'ionicons/icons';
 
 import Recorder from './pages/Recorder';
 import Metronome from './pages/Metronome';
-import SavedFiles from './pages/SavedFiles';
+import Tuner from './pages/Tuner';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -78,7 +78,7 @@ const App: React.FC = () => {
                     <IonRouterOutlet id="main-content">
                         <Route path="/recorder" component={Recorder} exact />
                         <Route path="/metronome" render={() => <Metronome selectedSound={selectedSound} />} exact />
-                        <Route path="/saved" component={SavedFiles} exact />
+                        <Route path="/tuner" component={Tuner} exact />
                         <Redirect from="/" to="/recorder" exact />
                     </IonRouterOutlet>
 
@@ -93,9 +93,9 @@ const App: React.FC = () => {
                             <IonLabel>Metronome</IonLabel>
                         </IonTabButton>
 
-                        <IonTabButton tab="saved" href="/saved">
-                            <IonIcon aria-hidden="true" icon={download} />
-                            <IonLabel>Saved Files</IonLabel>
+                        <IonTabButton tab="tuner" href="/tuner">
+                            <IonIcon aria-hidden="true" icon={pulse} />
+                            <IonLabel>Tuner</IonLabel>
                         </IonTabButton>
                     </IonTabBar>
                 </IonTabs>

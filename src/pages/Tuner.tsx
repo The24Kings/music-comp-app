@@ -15,15 +15,15 @@ import {
     ellipsisVertical
 } from 'ionicons/icons';
 
-import FilesContainer from '../components/FilesContainer';
+import TunerContainer from '../components/TunerContainer';
 
-const SavedFiles: React.FC = () => {
+const Tuner: React.FC = () => {
     return (
         <IonPage>
             <IonContent fullscreen>
                 <IonHeader>
                     <IonToolbar>
-                        <IonTitle size="large">Saved Files</IonTitle>
+                        <IonTitle size="large">Tuner</IonTitle>
 
                         <IonButtons slot="start">
                             <IonMenuButton autoHide={false}></IonMenuButton>
@@ -32,10 +32,10 @@ const SavedFiles: React.FC = () => {
                     </IonToolbar>
                 </IonHeader>
 
-                <FilesContainer name="Saved Files page" />
+                <TunerContainer name="Tuner Page" />
             </IonContent>
         </IonPage>
     );
 };
 
-export default SavedFiles;
+export default Tuner;

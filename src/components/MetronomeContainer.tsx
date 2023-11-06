@@ -178,7 +178,7 @@ const MetronomeContainer: React.FC<ContainerProps> = ({ selectedSound, name }) =
             </div>
 
             <div>
-                <IonButtons className="bpm-buttons"  slot="primary">
+                <IonButtons className="bpm-buttons" slot="primary">
                     <IonButton
                         className="remove"
                         shape="round"

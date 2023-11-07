@@ -2,6 +2,10 @@ import "./RecordContainer.css"
 
 import { useState, useRef } from "react";
 import { FaBeer } from 'react-icons/fa';
+import { CommonModule } from "@angular/common";
+import { NgModule } from '@angular/core';
+import { IonButton, IonButtons, IonContent, IonInput, IonItem, IonLabel, IonToolbar, IonIcon } from '@ionic/react';
+import { download } from 'ionicons/icons';
 
 interface ContainerProps {
   name: string;
@@ -15,6 +19,7 @@ const RecordContainer: React.FC<ContainerProps> = ({ name })  => {
     const [recordingStatus, setRecordingStatus] = useState("inactive");
     const [audioChunks, setAudioChunks] = useState([]);
     const [audio, setAudio] = useState(null);
+    const array = [];
 
     const getMicrophonePermission = async () => {
         if ("MediaRecorder" in window) {
@@ -25,6 +30,7 @@ const RecordContainer: React.FC<ContainerProps> = ({ name })  => {
                 });
                 setPermission(true);
                 setStream(streamData);
+                let isGranted:boolean = true;
             } catch (err) {
                 alert(err.message);
             }
@@ -50,9 +56,14 @@ const RecordContainer: React.FC<ContainerProps> = ({ name })  => {
          localAudioChunks.push(event.data);
       };
       setAudioChunks(localAudioChunks);
+/*       else
+      {
+        alert("Cannot continue without microphone permissions");
+      } */
     };
 
     const stopRecording = () => {
+      //const i = 0;
       setRecordingStatus("inactive");
       //stops the recording instance
       mediaRecorder.current.stop();
@@ -62,47 +73,58 @@ const RecordContainer: React.FC<ContainerProps> = ({ name })  => {
          const audioBlob = new Blob(audioChunks, { type: mimeType });
         //creates a playable URL from the blob file.
          const audioUrl = URL.createObjectURL(audioBlob);
-
+   /*       await Filesystem.writeFile({
+            path: audioUrl,
+            directory: Directory.Data,
+            data: audioBlob;
+         }) */
+         //array[0] = audioUrl;
          setAudio(audioUrl);
          setAudioChunks([]);
+         //array[0] = audioUrl;
       };
     };
-
+    getMicrophonePermission();
     /* Needs to be migrated over to Ionic Style Tags rather than HTML Style Tags */
     return (
-        <div>
-            <main>
+          <IonContent>
                 <div className="audio-controls">
                     <img id="object"
                         src='./resources/button.png'
                     />
-                    <button onClick={getMicrophonePermission} type="button" aria-label="Get Microphone Permission">
+   {/*                  <button onClick={getMicrophonePermission} type="button" aria-label="Get Microphone Permission">
                         Get Microphone Permissions
-                    </button>
-                    <button onClick={startRecording} type="button">
+                    </button> */}
+{/*                     <button onClick={() => {getMicrophonePermission(); startRecording(); }} type="button"> */}
+
+                    <IonButton onClick=
+                        {startRecording}
+                        >
                         Start Recording
-                    </button>
+                    </IonButton>
                     {recordingStatus === "recording" ? (
                         <div className="progress">
                           <div className="progress__bar"></div>
                         </div>
 
                     ) : null}
-                    <button onClick={stopRecording} type="button">
+                    <IonButton color="danger" margin-bottom="50px" onClick=
+                        {stopRecording}>
+
                         Stop Recording
-                    </button>
+                    </IonButton>
                 {audio ? (
                     <div className="audio-container">
                         <audio src={audio} controls></audio>
                         <a download href={audio}>
-                            Download Recording
+                          <IonIcon className="download" icon={download}></IonIcon>
                         </a>
                     </div>
 
                 ) : null}
+
                 </div>
-            </main>
-        </div>
+          </IonContent>
     );
 };
 

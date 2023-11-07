@@ -55,20 +55,35 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-top: 30px;
 }
-
+.download{
+    padding-left: 10px;
+    height: 50px;
+    width: 50px;
+    color: grey;
+}
 .audio-player,
 .video-player {
     display: flex;
-    justifyContent: center;
+    justify-content: center;
     align-items: center;
+    margin-top: 30px;
+
 }
+
 .audio-player,
 .video-player,
 .recorded-player {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-top: 30px;
+}
+.audio-container {
+    display: flex;
+    flex-direction: row;
+    margin-top: 50px;
 }
 .live-player {
     height: 200px;

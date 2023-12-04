@@ -23,7 +23,7 @@ const Tuner: React.FC = () => {
             <IonContent fullscreen>
                 <IonHeader>
                     <IonToolbar>
-                        <IonTitle size="large">Tuner</IonTitle>
+                        <IonTitle size="large">Files</IonTitle>
 
                         <IonButtons slot="start">
                             <IonMenuButton autoHide={false}></IonMenuButton>
@@ -32,7 +32,7 @@ const Tuner: React.FC = () => {
                     </IonToolbar>
                 </IonHeader>
 
-                <TunerContainer name="Tuner Page" />
+                <TunerContainer name="Files Page" />
             </IonContent>
         </IonPage>
     );

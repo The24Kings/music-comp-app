@@ -73,29 +73,19 @@ const RecordContainer: React.FC<ContainerProps> = ({ name }) => {
             const audioBlob = new Blob(audioChunks, { type: mimeType });
             //creates a playable URL from the blob file.
             const audioUrl = URL.createObjectURL(audioBlob);
-            /*       await Filesystem.writeFile({
-                     path: audioUrl,
-                     directory: Directory.Data,
-                     data: audioBlob;
-                  }) */
-            //array[0] = audioUrl;
+   
             setAudio(audioUrl);
             setAudioChunks([]);
             //array[0] = audioUrl;
         };
     };
     getMicrophonePermission();
-    /* Needs to be migrated over to Ionic Style Tags rather than HTML Style Tags */
     return (
         <IonContent>
             <div className="audio-controls">
                 <img id="object"
                     src='./resources/button.png'
                 />
-                {/*                  <button onClick={getMicrophonePermission} type="button" aria-label="Get Microphone Permission">
-                        Get Microphone Permissions
-                    </button> */}
-                {/*                     <button onClick={() => {getMicrophonePermission(); startRecording(); }} type="button"> */}
 
                 <IonButton onClick=
                     {startRecording}
@@ -115,8 +105,8 @@ const RecordContainer: React.FC<ContainerProps> = ({ name }) => {
                 </IonButton>
                 {audio ? (
                     <div className="audio-container">
-                        <audio src={audio} controls></audio>
-                        <a download href={audio}>
+                        <audio src={audio} controls controlsList="nodownload"></audio>
+                        <a download="SavedRecording.mp3" href={audio}>
                             <IonIcon className="download" icon={download}></IonIcon>
                         </a>
                     </div>

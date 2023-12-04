@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { IonContent, IonButton, IonList, IonItem, IonLabel } from '@ionic/react';
 
 interface ContainerProps {
@@ -7,43 +7,71 @@ interface ContainerProps {
 
 const TunerContainer: React.FC<ContainerProps> = ({ name }) => {
     const [audioFiles, setAudioFiles] = useState<File[]>([]);
+    const fileInputRef = useRef<HTMLInputElement | null>(null);
 
     // Function to load audio files from the user's selection
     const loadAudioFiles = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files) {
             const selectedFiles = Array.from(event.target.files);
-            setAudioFiles(selectedFiles);
+
+            // Update state with only the last 5 audio files
+            setAudioFiles((prevFiles) => {
+                const updatedFiles = [...selectedFiles, ...prevFiles].slice(0, 3);
+                return updatedFiles;
+            });
         }
     };
 
-    // Function to play the selected audio file
-    const playAudio = (audioFile: File) => {
-        const audioUrl = URL.createObjectURL(audioFile);
-        const audio = new Audio(audioUrl);
-        audio.play();
+    // Function to trigger file input click
+    const triggerFileInput = () => {
+        if (fileInputRef.current) {
+            fileInputRef.current.click();
+        }
     };
 
     return (
         <IonContent>
-            <IonButton>
-                <label htmlFor="audioFileInput">Load Audio Files</label>
+            <div className="audio-controls">
+                <img
+                    id="object"
+                    src="./resources/file.png"
+                  
+                />
+            </div>
+
+            <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+                <IonButton onClick={triggerFileInput}>Load Audio Files</IonButton>
                 <input
+                    ref={fileInputRef}
                     type="file"
                     id="audioFileInput"
-                    accept=".mp3" // Specify the accepted file type
+                    accept=".mp3"
                     multiple
                     onChange={loadAudioFiles}
                     style={{ display: 'none' }}
                 />
-            </IonButton>
-            <IonList>
-                {audioFiles.map((audioFile, index) => (
-                    <IonItem key={index}>
-                        <IonLabel>{audioFile.name}</IonLabel>
-                        <IonButton onClick={() => playAudio(audioFile)}>Play</IonButton>
-                    </IonItem>
-                ))}
-            </IonList>
+            </div>
+            {audioFiles.length > 0 && (
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    <IonList inset={true} style={{ maxWidth: '700px', width: '100%' }}>
+                        {audioFiles.slice(0).map((audioFile, index) => (
+                            <IonItem
+                                key={index}
+                                style={{ height: '100px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}
+                            >
+                                {/* Display the file name text within the new height space */}
+                                <IonLabel style={{ textAlign: 'left', width: '100%', marginTop: '5px' }}>
+                                    <h2>{audioFile.name}</h2>
+                                </IonLabel>
+                                {/* Display the audio player */}
+                                <audio src={URL.createObjectURL(audioFile)} controls controlsList="nodownload" style={{ height: '40px', width: '40%' }}></audio>
+
+                                
+                            </IonItem>
+                        ))}
+                    </IonList>
+                </div>
+            )}
         </IonContent>
     );
 };

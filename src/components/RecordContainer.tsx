@@ -13,6 +13,23 @@ interface ContainerProps {
 const mimeType = 'audio/mpeg';
 
 const RecordContainer: React.FC<ContainerProps> = ({ name })  => {
+
+    let buttonImage = './resources/button_black.png';
+
+    const querySystem: UseMediaQuery = (query) => {
+        const mediaQueryList = window.matchMedia(query);
+        return mediaQueryList.matches;
+    };
+
+    const systemPrefersDark = () => {
+        return querySystem('(prefers-color-scheme: dark)');
+    };
+
+    let prefersDarkMode = systemPrefersDark();
+    if (prefersDarkMode){
+        buttonImage = './resources/button_white.png';
+    }
+
     const [permission, setPermission] = useState(false);
     const [stream, setStream] = useState(null);
     const mediaRecorder = useRef(null);
@@ -90,7 +107,7 @@ const RecordContainer: React.FC<ContainerProps> = ({ name })  => {
           <IonContent>
                 <div className="audio-controls">
                     <img id="object"
-                        src='./resources/button.png'
+                        src={`${buttonImage}`}
                     />
    {/*                  <button onClick={getMicrophonePermission} type="button" aria-label="Get Microphone Permission">
                         Get Microphone Permissions

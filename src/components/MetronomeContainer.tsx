@@ -1,6 +1,8 @@
-import './MetronomeContainer.css';
 import React, { useState, useEffect, useReducer, useRef, useCallback } from 'react';
 import { IonButton, IonButtons, IonContent, IonInput, IonItem, IonLabel, IonToolbar, IonIcon } from '@ionic/react';
+import { useMediaQuery } from 'react-responsive'
+
+import './MetronomeContainer.css';
 
 import { play, stop, remove, add } from 'ionicons/icons';
 
@@ -49,9 +51,35 @@ export const useAnimationFrame = (
 }
 
 const MetronomeContainer: React.FC<ContainerProps> = ({ selectedSound, name }) => {
-    //TODO: Change these to update based on user settings -> light | dark mode
-    const metronomeBase = '../assets/pictures/metronome-grey.svg';
-    const metronomeArm = '../assets/pictures/arm-white.svg';
+    //Updated to change theme based on user settings -> light | dark mode
+    let metronomeBase = '../assets/pictures/metronome-grey.svg';
+    let metronomeArm = '../assets/pictures/arm-white.svg';
+
+    let fillColor = "red"
+    let mtColor = "gray"
+
+    const querySystem: UseMediaQuery = (query) => {
+      const mediaQueryList = window.matchMedia(query);
+      return mediaQueryList.matches;
+    };
+
+    const systemPrefersDark = () => {
+      return querySystem('(prefers-color-scheme: dark)');
+    };
+
+    let prefersDarkMode = systemPrefersDark();
+    if (prefersDarkMode){
+        console.log('system prefers dark')
+        metronomeBase = '../assets/pictures/metronome-grey.svg';
+        metronomeArm = '../assets/pictures/arm-white.svg';
+    }
+    else{
+        console.log('system prefers light')
+        metronomeBase = '../assets/pictures/metronome-black.svg';
+        metronomeArm = '../assets/pictures/arm-white.svg';
+        fillColor = "blue"
+        mtColor = "azure"
+    }
 
     const [isRunning, setIsRunning] = useState(false);
     const [bpm, setBpm] = useState(130);
@@ -169,8 +197,8 @@ const MetronomeContainer: React.FC<ContainerProps> = ({ selectedSound, name }) =
                     max={250}
                     rotationOffset={90}
                     stepSize={5}
-                    color="red"
-                    bgColor="gray"
+                    color={`${fillColor}`}
+                    bgColor={`${mtColor}`}
                     strokeWidth={10}
                     radius={100}
                     onChange={bpm => setBpm(bpm)}

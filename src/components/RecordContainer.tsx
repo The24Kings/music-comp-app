@@ -1,18 +1,34 @@
 import "./RecordContainer.css"
-
+import { Component, ElementRef, ViewChild } from '@angular/core';
+import { AnimationController } from '@ionic/angular';
 import { useState, useRef } from "react";
-//import { FaBeer } from 'react-icons/fa';
-//import { CommonModule } from "@angular/common";
-//import { NgModule } from '@angular/core';
 import { IonButton, IonButtons, IonContent, IonInput, IonItem, IonLabel, IonToolbar, IonIcon } from '@ionic/react';
 import { download } from 'ionicons/icons';
+
 
 interface ContainerProps {
     name: string;
 }
 const mimeType = 'audio/mpeg';
 
-const RecordContainer: React.FC<ContainerProps> = ({ name }) => {
+const RecordContainer: React.FC<ContainerProps> = ({ name })  => {
+
+    let buttonImage = './resources/button_black.png';
+
+    const querySystem: UseMediaQuery = (query) => {
+        const mediaQueryList = window.matchMedia(query);
+        return mediaQueryList.matches;
+    };
+
+    const systemPrefersDark = () => {
+        return querySystem('(prefers-color-scheme: dark)');
+    };
+
+    let prefersDarkMode = systemPrefersDark();
+    if (prefersDarkMode){
+        buttonImage = './resources/button_white.png';
+    }
+
     const [permission, setPermission] = useState(false);
     const [stream, setStream] = useState(null);
     const mediaRecorder = useRef(null);
@@ -53,13 +69,10 @@ const RecordContainer: React.FC<ContainerProps> = ({ name }) => {
         mediaRecorder.current.ondataavailable = (event) => {
             if (typeof event.data === "undefined") return;
             if (event.data.size === 0) return;
+          
             localAudioChunks.push(event.data);
         };
         setAudioChunks(localAudioChunks);
-        /*       else
-              {
-                alert("Cannot continue without microphone permissions");
-              } */
     };
 
     const stopRecording = () => {
@@ -76,43 +89,35 @@ const RecordContainer: React.FC<ContainerProps> = ({ name }) => {
    
             setAudio(audioUrl);
             setAudioChunks([]);
-            //array[0] = audioUrl;
         };
     };
     getMicrophonePermission();
+  
     return (
-        <IonContent>
-            <div className="audio-controls">
-                <img id="object"
-                    src='./resources/button.png'
-                />
+          <IonContent>
+                <div className="audio-controls">
+                     <img id="object" src={`${buttonImage}`}/>
+                  
+                     <IonButton id="trigger" onClick={startRecording}>
+                        Start Recording
+                     </IonButton>
+                  
+                     {recordingStatus === "recording" ? (
+                        <ion-spinner trigger="trigger" name="circles"></ion-spinner>
+                     ) : null}
 
-                <IonButton onClick=
-                    {startRecording}
-                >
-                    Start Recording
-                </IonButton>
-                {recordingStatus === "recording" ? (
-                    <div className="progress">
-                        <div className="progress__bar"></div>
-                    </div>
-
-                ) : null}
-                <IonButton color="danger" margin-bottom="50px" onClick=
-                    {stopRecording}>
-
-                    Stop Recording
-                </IonButton>
-                {audio ? (
+                    <IonButton color="danger" margin-bottom="50px" onClick={stopRecording}>
+                        Stop Recording
+                    </IonButton>
+                  
+                {recordingStatus === "inactive" && audio ? (
                     <div className="audio-container">
                         <audio src={audio} controls controlsList="nodownload"></audio>
                         <a download="SavedRecording.mp3" href={audio}>
                             <IonIcon className="download" icon={download}></IonIcon>
                         </a>
                     </div>
-
                 ) : null}
-
             </div>
         </IonContent>
     );

@@ -120,6 +120,7 @@ const MetronomeContainer: React.FC<ContainerProps> = ({ selectedSound, name }) =
                 audioRef.current.addEventListener('loadeddata', () => {
                     // Once loaded, play the audio
                     audioRef.current!.play();
+                    Navigator.vibrate();
                 });
 
                 // Trigger the 'load' operation

@@ -1,11 +1,13 @@
 import "./RecordContainer.css"
-
+import { Component, ElementRef, ViewChild } from '@angular/core';
+import { AnimationController } from '@ionic/angular';
 import { useState, useRef } from "react";
 import { FaBeer } from 'react-icons/fa';
 import { CommonModule } from "@angular/common";
 import { NgModule } from '@angular/core';
 import { IonButton, IonButtons, IonContent, IonInput, IonItem, IonLabel, IonToolbar, IonIcon } from '@ionic/react';
 import { download } from 'ionicons/icons';
+
 
 interface ContainerProps {
   name: string;
@@ -106,7 +108,7 @@ const RecordContainer: React.FC<ContainerProps> = ({ name })  => {
     return (
           <IonContent>
                 <div className="audio-controls">
-                    <img id="object"
+                     <img id="object"
                         src={`${buttonImage}`}
                     />
    {/*                  <button onClick={getMicrophonePermission} type="button" aria-label="Get Microphone Permission">
@@ -114,23 +116,25 @@ const RecordContainer: React.FC<ContainerProps> = ({ name })  => {
                     </button> */}
 {/*                     <button onClick={() => {getMicrophonePermission(); startRecording(); }} type="button"> */}
 
-                    <IonButton onClick=
+                     <IonButton id="trigger" onClick=
                         {startRecording}
-                        >
+                     >
                         Start Recording
-                    </IonButton>
-                    {recordingStatus === "recording" ? (
-                        <div className="progress">
+                     </IonButton>
+                     {recordingStatus === "recording" ? (
+                        <ion-spinner trigger="trigger" name="circles"></ion-spinner>
+             /*            <div className="progress">
                           <div className="progress__bar"></div>
-                        </div>
+                        </div> */
 
-                    ) : null}
+                     ) : null}
+
                     <IonButton color="danger" margin-bottom="50px" onClick=
                         {stopRecording}>
 
                         Stop Recording
                     </IonButton>
-                {audio ? (
+                {recordingStatus === "inactive" && audio ? (
                     <div className="audio-container">
                         <audio src={audio} controls></audio>
                         <a download href={audio}>

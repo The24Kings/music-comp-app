@@ -10,7 +10,7 @@ import { Redirect, Route } from 'react-router-dom';
 
 /* Main Tabs for the app */
 import {
-    mic, alarm, pulse
+    mic, alarm, folder
 } from 'ionicons/icons';
 
 import Recorder from './pages/Recorder';
@@ -94,8 +94,8 @@ const App: React.FC = () => {
                         </IonTabButton>
 
                         <IonTabButton tab="tuner" href="/tuner">
-                            <IonIcon aria-hidden="true" icon={pulse} />
-                            <IonLabel>Tuner</IonLabel>
+                            <IonIcon aria-hidden="true" icon={folder} />
+                            <IonLabel>Files</IonLabel>
                         </IonTabButton>
                     </IonTabBar>
                 </IonTabs>

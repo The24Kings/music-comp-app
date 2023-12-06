@@ -13,7 +13,7 @@ const mimeType = 'audio/mpeg';
 
 const RecordContainer: React.FC<ContainerProps> = ({ name })  => {
 
-    let buttonImage = './resources/button_black.png';
+    let buttonImage = '../assets/pictures/button_black.png';
 
     const querySystem: UseMediaQuery = (query) => {
         const mediaQueryList = window.matchMedia(query);
@@ -26,7 +26,7 @@ const RecordContainer: React.FC<ContainerProps> = ({ name })  => {
 
     let prefersDarkMode = systemPrefersDark();
     if (prefersDarkMode){
-        buttonImage = './resources/button_white.png';
+        buttonImage = '../assets/pictures/button_white.png';
     }
 
     const [permission, setPermission] = useState(false);

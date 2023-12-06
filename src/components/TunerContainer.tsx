@@ -29,7 +29,7 @@ const TunerContainer: React.FC<ContainerProps> = ({ name }) => {
         }
     };
 
-    let fileImage = './resources/file_black.png';
+    let fileImage = '../assets/pictures/file_black.png';
 
     const querySystem: UseMediaQuery = (query) => {
         const mediaQueryList = window.matchMedia(query);
@@ -42,7 +42,7 @@ const TunerContainer: React.FC<ContainerProps> = ({ name }) => {
 
     let prefersDarkMode = systemPrefersDark();
     if (prefersDarkMode) {
-        fileImage = './resources/file_white.png';
+        fileImage = '../assets/pictures/file_white.png';
     }
 
     return (

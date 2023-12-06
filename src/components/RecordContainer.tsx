@@ -56,6 +56,7 @@ const RecordContainer: React.FC<ContainerProps> = ({ name })  => {
     };
 
     const startRecording = async () => {
+        getMicrophonePermission();
         setRecordingStatus("recording");
         //create new Media recorder instance using the stream
         const media = new MediaRecorder(stream);
@@ -91,7 +92,6 @@ const RecordContainer: React.FC<ContainerProps> = ({ name })  => {
             setAudioChunks([]);
         };
     };
-    getMicrophonePermission();
   
     return (
           <IonContent>

@@ -1,9 +1,7 @@
 import "./RecordContainer.css"
-import { useState, useRef } from "react";
-import { IonButton, IonButtons, IonContent, IonInput, IonItem, IonLabel, IonToolbar, IonIcon } from '@ionic/react';
+import React, { useState, useRef } from "react";
+import { IonButton, IonButtons, IonContent, IonInput, IonItem, IonLabel, IonToolbar, IonIcon, IonSpinner } from '@ionic/react';
 import { download } from 'ionicons/icons';
-import { IonSpinner } from '@ionic/react';
-
 
 
 interface ContainerProps {
@@ -13,21 +11,36 @@ const mimeType = 'audio/mpeg';
 
 const RecordContainer: React.FC<ContainerProps> = ({ name })  => {
 
-    let buttonImage = '../assets/pictures/button_black.png';
+    //Change button image based on the user's system preferences
+    const [buttonImage, setButtonImage] = useState('../assets/button_black.png');
 
-    const querySystem: UseMediaQuery = (query) => {
-        const mediaQueryList = window.matchMedia(query);
-        return mediaQueryList.matches;
+    function querySystem() {
+        const mediaQueryList = window.matchMedia('(prefers-color-scheme: dark)');
+
+        React.useEffect(() => {
+            function updateTheme() {
+                const systemPrefersDark = mediaQueryList.matches;
+                if (systemPrefersDark) {
+                    //console.log('system prefers dark')
+                    setButtonImage('../assets/button_white.png')
+                }
+                else {
+                    //console.log('system prefers light')
+                    setButtonImage('../assets/button_black.png')
+                }
+            }
+
+            updateTheme()
+            mediaQueryList.addEventListener("change", updateTheme)
+            mediaQueryList.addListener(e => e.matches && updateTheme)
+
+            return () => {
+                mediaQueryList.removeEventListener("change", updateTheme)
+            };
+        }, [mediaQueryList]);
     };
 
-    const systemPrefersDark = () => {
-        return querySystem('(prefers-color-scheme: dark)');
-    };
-
-    let prefersDarkMode = systemPrefersDark();
-    if (prefersDarkMode){
-        buttonImage = '../assets/pictures/button_white.png';
-    }
+    querySystem();
 
     const [permission, setPermission] = useState(false);
     const [stream, setStream] = useState(null);
@@ -104,7 +117,6 @@ const RecordContainer: React.FC<ContainerProps> = ({ name })  => {
                   
                      {recordingStatus === "recording" ? (
                     <IonSpinner name="circles"></IonSpinner>
-
                      ) : null}
 
                     <IonButton color="danger" margin-bottom="50px" onClick={stopRecording}>

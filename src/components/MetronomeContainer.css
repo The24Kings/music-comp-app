@@ -45,7 +45,7 @@
 }
 
 @media (prefers-color-scheme: light){
-    ion-content{
+    .tabs-inner{
         --ion-background-color: url('/assets/pictures/light_triangles_b.png');
     }
 
@@ -55,13 +55,17 @@
 
     .input-wrapper.sc-ion-input-md{
         background: rgb(225 225 225 / 75%);
-        border-radius: 1em;
+        border-radius: 2em;
         padding: 0.75em;
     }
 }
 
 @media (prefers-color-scheme: dark){
-    ion-content{
+    .tabs-inner{
         --ion-background-color: url('assets/pictures/dark-triangles.png');
+    }
+
+    #background-content{
+        background-color: rgb(30 30 30);
     }
 }

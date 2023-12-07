@@ -122,3 +122,10 @@ button
     flex-direction: column;
     align-items: center;
 }
+
+@media (prefers-color-scheme: light){
+    ion-toolbar{
+        --ion-toolbar-background: white;
+    }
+}
+

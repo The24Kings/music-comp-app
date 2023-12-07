@@ -11,6 +11,9 @@ interface ContainerProps {
 const mimeType = 'audio/mpeg';
 
 const RecordContainer: React.FC<ContainerProps> = ({ name })  => {
+    window.onload = function() {
+      getMicrophonePermission();
+    };
 
     //Change button image based on the user's system preferences
     const [buttonImage, setButtonImage] = useState('./resources/button_black.png');
@@ -60,9 +63,9 @@ const RecordContainer: React.FC<ContainerProps> = ({ name })  => {
                 });
                 setPermission(true);
                 setStream(streamData);
-                let isGranted: boolean = true;
             } catch (err) {
                 alert(err.message);
+                console.log(err.message);
             }
         } else {
             alert("The MediaRecorder API is not supported in your browser.");
@@ -70,49 +73,60 @@ const RecordContainer: React.FC<ContainerProps> = ({ name })  => {
     };
 
     const startRecording = async () => {
-        setRecordingStatus("recording");
-        //create new Media recorder instance using the stream
-        const media = new MediaRecorder(stream);
-        //set the MediaRecorder instance to the mediaRecorder ref
-        mediaRecorder.current = media;
-        //invokes the start method to start the recording process
-        mediaRecorder.current.start();
+        try {
+            setRecordingStatus("recording");
 
-        let localAudioChunks = [];
+            //create new Media recorder instance using the stream
+            const media = new MediaRecorder(stream);
 
-        mediaRecorder.current.ondataavailable = (event) => {
-            if (typeof event.data === "undefined") return;
-            if (event.data.size === 0) return;
-          
-            localAudioChunks.push(event.data);
-        };
-        setAudioChunks(localAudioChunks);
+            //set the MediaRecorder instance to the mediaRecorder ref
+            mediaRecorder.current = media;
+
+            //invokes the start method to start the recording process
+            mediaRecorder.current.start();
+
+            let localAudioChunks = [];
+
+            mediaRecorder.current.ondataavailable = (event) => {
+                if (typeof event.data === "undefined") return;
+                if (event.data.size === 0) return;
+
+                localAudioChunks.push(event.data);
+            };
+            setAudioChunks(localAudioChunks);
+
+        } catch (err) {
+            console.log(err.message);
+        }
     };
 
     const stopRecording = () => {
-        //const i = 0;
-        setRecordingStatus("inactive");
-        //stops the recording instance
-        mediaRecorder.current.stop();
+        try {
+            setRecordingStatus("inactive");
 
-        mediaRecorder.current.onstop = () => {
-            //creates a blob file from the audiochunks data
-            const audioBlob = new Blob(audioChunks, { type: mimeType });
-            //creates a playable URL from the blob file.
-            const audioUrl = URL.createObjectURL(audioBlob);
-   
-            setAudio(audioUrl);
-            setAudioChunks([]);
-        };
+            //stops the recording instance
+            mediaRecorder.current.stop();
+
+            mediaRecorder.current.onstop = () => {
+                //creates a blob file from the audiochunks data
+                const audioBlob = new Blob(audioChunks, { type: mimeType });
+                //creates a playable URL from the blob file.
+                const audioUrl = URL.createObjectURL(audioBlob);
+
+                setAudio(audioUrl);
+                setAudioChunks([]);
+            };
+        } catch (err) {
+            console.log(err.message);
+        }
     };
-    getMicrophonePermission();
   
     return (
-          <IonContent>
+         <IonContent>
                 <div className="audio-controls">
                      <img id="object" src={`${buttonImage}`}/>
                   
-                     <IonButton id="trigger" onClick={startRecording}>
+                     <IonButton id="trigger" onClick={startRecording} disabled={!permission}>
                         Start Recording
                      </IonButton>
                   
@@ -120,7 +134,7 @@ const RecordContainer: React.FC<ContainerProps> = ({ name })  => {
                         <IonSpinner name="circles"></IonSpinner>
                      ) : null}
 
-                    <IonButton color="danger" margin-bottom="50px" onClick={stopRecording}>
+                    <IonButton color="danger" margin-bottom="50px" onClick={stopRecording} disabled={!permission}>
                         Stop Recording
                     </IonButton>
                   

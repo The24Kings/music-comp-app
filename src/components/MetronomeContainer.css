@@ -68,4 +68,10 @@
     #background-content{
         background-color: rgb(30 30 30);
     }
+
+    .input-wrapper.sc-ion-input-md{
+            background: rgb(30 30 30);
+            border-radius: 2em;
+            padding: 0.75em;
+    }
 }

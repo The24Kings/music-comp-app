@@ -15,7 +15,7 @@ const RecordContainer: React.FC<ContainerProps> = ({ name })  => {
     };
 
     //Change button image based on the user's system preferences
-    const [buttonImage, setButtonImage] = useState('../assets/button_black.png');
+    const [buttonImage, setButtonImage] = useState('../assets/pictures/button_black.png');
 
     function querySystem() {
         const mediaQueryList = window.matchMedia('(prefers-color-scheme: dark)');
@@ -25,7 +25,7 @@ const RecordContainer: React.FC<ContainerProps> = ({ name })  => {
                 const systemPrefersDark = mediaQueryList.matches;
                 if (systemPrefersDark) {
                     //console.log('system prefers dark')
-                    setButtonImage('../assets/button_white.png')
+                    setButtonImage('../assets/pictures/button_white.png')
                 }
                 else {
                     //console.log('system prefers light')
@@ -118,7 +118,7 @@ const RecordContainer: React.FC<ContainerProps> = ({ name })  => {
             <div className="audio-controls">
                 <img id="object" src={`${buttonImage}`} />
 
-                <IonButton id="trigger" onClick={startRecording}>
+                <IonButton id="trigger" onClick={startRecording} disabled={!permission}>
                     Start Recording
                 </IonButton>
 
@@ -127,7 +127,7 @@ const RecordContainer: React.FC<ContainerProps> = ({ name })  => {
 
                 ) : null}
 
-                <IonButton color="danger" margin-bottom="50px" onClick={stopRecording}>
+                <IonButton color="danger" margin-bottom="50px" onClick={stopRecording} disabled={!permission}>
                     Stop Recording
                 </IonButton>
 

@@ -129,3 +129,6 @@ button
     }
 }
 
+ion-content {
+  --overflow: hidden;
+}

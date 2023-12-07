@@ -69,3 +69,7 @@
         background-color: rgb(30 30 30);
     }
 }
+
+ion-content {
+  --overflow: hidden;
+}

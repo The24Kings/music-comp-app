@@ -11,7 +11,7 @@ interface ContainerProps {
 const FilesContainer: React.FC<ContainerProps> = ({ name }) => {
 
     //Change button image based on the user's system preferences
-    const [fileImage, setFileImage] = useState('../assets/file_black.png');
+    const [fileImage, setFileImage] = useState('../assets/pictures/file_black.png');
 
     function querySystem(){
         const mediaQueryList = window.matchMedia('(prefers-color-scheme: dark)');
@@ -21,11 +21,11 @@ const FilesContainer: React.FC<ContainerProps> = ({ name }) => {
                 const systemPrefersDark = mediaQueryList.matches;
                 if (systemPrefersDark){
                     //console.log('system prefers dark')
-                    setFileImage('../assets/file_white.png')
+                    setFileImage('../assets/pictures/file_white.png')
                 }
                 else{
                     //console.log('system prefers light')
-                    setFileImage('../assets/file_black.png')
+                    setFileImage('../assets/pictures/file_black.png')
                 }
             }
 

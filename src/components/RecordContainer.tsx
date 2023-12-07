@@ -16,29 +16,29 @@ const RecordContainer: React.FC<ContainerProps> = ({ name })  => {
     };
 
     //Change button image based on the user's system preferences
-    const [buttonImage, setButtonImage] = useState('./resources/button_black.png');
+    const [buttonImage, setButtonImage] = useState('../assets/button_black.png');
 
-    function querySystem(){
+    function querySystem() {
         const mediaQueryList = window.matchMedia('(prefers-color-scheme: dark)');
 
         React.useEffect(() => {
-            function updateTheme(){
+            function updateTheme() {
                 const systemPrefersDark = mediaQueryList.matches;
-                if(systemPrefersDark){
+                if (systemPrefersDark) {
                     //console.log('system prefers dark')
-                    setButtonImage('./resources/button_white.png')
+                    setButtonImage('../assets/button_white.png')
                 }
-                else{
+                else {
                     //console.log('system prefers light')
-                    setButtonImage('./resources/button_black.png')
+                    setButtonImage('../assets/button_black.png')
                 }
             }
 
             updateTheme()
             mediaQueryList.addEventListener("change", updateTheme)
             mediaQueryList.addListener(e => e.matches && updateTheme)
-
-            return() => {
+          
+  return() => {
                 mediaQueryList.removeEventListener("change", updateTheme)
             };
         }, [mediaQueryList]);
@@ -63,41 +63,34 @@ const RecordContainer: React.FC<ContainerProps> = ({ name })  => {
                 });
                 setPermission(true);
                 setStream(streamData);
+                let isGranted: boolean = true;
             } catch (err) {
-                alert(err.message);
-                console.log(err.message);
+                alert("Please go to Settings and enable Microphone!")
             }
         } else {
             alert("The MediaRecorder API is not supported in your browser.");
         }
     };
 
-    const startRecording = async () => {
-        try {
-            setRecordingStatus("recording");
+  const startRecording = async () => {
+        getMicrophonePermission();
+        setRecordingStatus("recording");
+        //create new Media recorder instance using the stream
+        const media = new MediaRecorder(stream);
+        //set the MediaRecorder instance to the mediaRecorder ref
+        mediaRecorder.current = media;
+        //invokes the start method to start the recording process
+        mediaRecorder.current.start();
 
-            //create new Media recorder instance using the stream
-            const media = new MediaRecorder(stream);
+        let localAudioChunks = [];
 
-            //set the MediaRecorder instance to the mediaRecorder ref
-            mediaRecorder.current = media;
-
-            //invokes the start method to start the recording process
-            mediaRecorder.current.start();
-
-            let localAudioChunks = [];
-
-            mediaRecorder.current.ondataavailable = (event) => {
-                if (typeof event.data === "undefined") return;
-                if (event.data.size === 0) return;
-
-                localAudioChunks.push(event.data);
-            };
-            setAudioChunks(localAudioChunks);
-
-        } catch (err) {
-            console.log(err.message);
-        }
+        mediaRecorder.current.ondataavailable = (event) => {
+            if (typeof event.data === "undefined") return;
+            if (event.data.size === 0) return;
+          
+            localAudioChunks.push(event.data);
+        };
+        setAudioChunks(localAudioChunks);
     };
 
     const stopRecording = () => {
@@ -130,8 +123,8 @@ const RecordContainer: React.FC<ContainerProps> = ({ name })  => {
                         Start Recording
                      </IonButton>
                   
-                     {recordingStatus === "recording" ? (
-                        <IonSpinner name="circles"></IonSpinner>
+     {recordingStatus === "recording" ? (
+                    <IonSpinner name="circles"></IonSpinner>
                      ) : null}
 
                     <IonButton color="danger" margin-bottom="50px" onClick={stopRecording} disabled={!permission}>

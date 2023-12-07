@@ -1,5 +1,4 @@
 import "./RecordContainer.css"
-
 import React, { useState, useRef } from "react";
 import { IonButton, IonButtons, IonContent, IonInput, IonItem, IonLabel, IonToolbar, IonIcon, IonSpinner } from '@ionic/react';
 import { download } from 'ionicons/icons';
@@ -11,12 +10,12 @@ interface ContainerProps {
 const mimeType = 'audio/mpeg';
 
 const RecordContainer: React.FC<ContainerProps> = ({ name })  => {
-    window.onload = function() {
-      getMicrophonePermission();
+    window.onload = function () {
+        getMicrophonePermission();
     };
 
     //Change button image based on the user's system preferences
-    const [buttonImage, setButtonImage] = useState('../assets/pictures/button_black.png');
+    const [buttonImage, setButtonImage] = useState('../assets/button_black.png');
 
     function querySystem() {
         const mediaQueryList = window.matchMedia('(prefers-color-scheme: dark)');
@@ -26,19 +25,19 @@ const RecordContainer: React.FC<ContainerProps> = ({ name })  => {
                 const systemPrefersDark = mediaQueryList.matches;
                 if (systemPrefersDark) {
                     //console.log('system prefers dark')
-                    setButtonImage('../assets/pictures/button_white.png')
+                    setButtonImage('../assets/button_white.png')
                 }
                 else {
                     //console.log('system prefers light')
-                    setButtonImage('../assets/pictures/button_black.png')
+                    setButtonImage('../assets/button_black.png')
                 }
             }
 
             updateTheme()
             mediaQueryList.addEventListener("change", updateTheme)
             mediaQueryList.addListener(e => e.matches && updateTheme)
-          
-  return() => {
+
+            return () => {
                 mediaQueryList.removeEventListener("change", updateTheme)
             };
         }, [mediaQueryList]);
@@ -72,7 +71,7 @@ const RecordContainer: React.FC<ContainerProps> = ({ name })  => {
         }
     };
 
-  const startRecording = async () => {
+    const startRecording = async () => {
         getMicrophonePermission();
         setRecordingStatus("recording");
         //create new Media recorder instance using the stream
@@ -115,22 +114,23 @@ const RecordContainer: React.FC<ContainerProps> = ({ name })  => {
     };
   
     return (
-         <IonContent>
-                <div className="audio-controls">
-                     <img id="object" src={`${buttonImage}`}/>
-                  
-                     <IonButton id="trigger" onClick={startRecording} disabled={!permission}>
-                        Start Recording
-                     </IonButton>
-                  
-     {recordingStatus === "recording" ? (
-                    <IonSpinner name="circles"></IonSpinner>
-                     ) : null}
+        <IonContent>
+            <div className="audio-controls">
+                <img id="object" src={`${buttonImage}`} />
 
-                    <IonButton color="danger" margin-bottom="50px" onClick={stopRecording} disabled={!permission}>
-                        Stop Recording
-                    </IonButton>
-                  
+                <IonButton id="trigger" onClick={startRecording}>
+                    Start Recording
+                </IonButton>
+
+                {recordingStatus === "recording" ? (
+                    <IonSpinner name="circles"></IonSpinner>
+
+                ) : null}
+
+                <IonButton color="danger" margin-bottom="50px" onClick={stopRecording}>
+                    Stop Recording
+                </IonButton>
+
                 {recordingStatus === "inactive" && audio ? (
                     <div className="audio-container">
                         <audio src={audio} controls controlsList="nodownload"></audio>

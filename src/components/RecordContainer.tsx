@@ -1,8 +1,7 @@
 import "./RecordContainer.css"
-import { Component, ElementRef, ViewChild } from '@angular/core';
-import { AnimationController } from '@ionic/angular';
+
 import { useState, useRef } from "react";
-import { IonButton, IonButtons, IonContent, IonInput, IonItem, IonLabel, IonToolbar, IonIcon } from '@ionic/react';
+import { IonButton, IonButtons, IonContent, IonInput, IonItem, IonLabel, IonToolbar, IonIcon, IonSpinner } from '@ionic/react';
 import { download } from 'ionicons/icons';
 
 
@@ -15,7 +14,7 @@ const RecordContainer: React.FC<ContainerProps> = ({ name })  => {
 
     let buttonImage = './resources/button_black.png';
 
-    const querySystem: UseMediaQuery = (query) => {
+    const querySystem = (query) => {
         const mediaQueryList = window.matchMedia(query);
         return mediaQueryList.matches;
     };
@@ -103,7 +102,7 @@ const RecordContainer: React.FC<ContainerProps> = ({ name })  => {
                      </IonButton>
                   
                      {recordingStatus === "recording" ? (
-                        <ion-spinner trigger="trigger" name="circles"></ion-spinner>
+                        <IonSpinner name="circles"></IonSpinner>
                      ) : null}
 
                     <IonButton color="danger" margin-bottom="50px" onClick={stopRecording}>

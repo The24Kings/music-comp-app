@@ -58,7 +58,7 @@ const MetronomeContainer: React.FC<ContainerProps> = ({ selectedSound, name }) =
     let fillColor = "red"
     let mtColor = "gray"
 
-    const querySystem: UseMediaQuery = (query) => {
+    const querySystem = (query) => {
       const mediaQueryList = window.matchMedia(query);
       return mediaQueryList.matches;
     };
@@ -120,7 +120,7 @@ const MetronomeContainer: React.FC<ContainerProps> = ({ selectedSound, name }) =
                 audioRef.current.addEventListener('loadeddata', () => {
                     // Once loaded, play the audio
                     audioRef.current!.play();
-                    Navigator.vibrate();
+                    navigator.vibrate(100);
                 });
 
                 // Trigger the 'load' operation
@@ -162,8 +162,6 @@ const MetronomeContainer: React.FC<ContainerProps> = ({ selectedSound, name }) =
                         ref={armRef}
                     />
                 </div>
-
-                <div className="blink" ref={blinkRef}></div>
 
                 <IonButtons className="metronome-buttons" slot="primary">
                     <IonButton

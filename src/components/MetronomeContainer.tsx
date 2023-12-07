@@ -52,34 +52,46 @@ export const useAnimationFrame = (
 
 const MetronomeContainer: React.FC<ContainerProps> = ({ selectedSound, name }) => {
     //Updated to change theme based on user settings -> light | dark mode
-    let metronomeBase = '../assets/pictures/metronome-grey.svg';
-    let metronomeArm = '../assets/pictures/arm-white.svg';
+    const [metronomeBase, setMetronomeBase] = useState('../assets/pictures/metronome-grey.svg');
+    const [metronomeArm, setMetronomeArm] = useState('../assets/pictures/arm-white.svg');
 
-    let fillColor = "red"
-    let mtColor = "gray"
+    const [fillColor, setFillColor] = useState("crimson")
+    const [mtColor, setMTColor] = useState("gray")
 
-    const querySystem: UseMediaQuery = (query) => {
-      const mediaQueryList = window.matchMedia(query);
-      return mediaQueryList.matches;
-    };
+    function querySystem(){
+        const mediaQueryList = window.matchMedia('(prefers-color-scheme: dark)');
 
-    const systemPrefersDark = () => {
-      return querySystem('(prefers-color-scheme: dark)');
-    };
+        React.useEffect(() => {
+            function updateTheme(){
+                const systemPrefersDark = mediaQueryList.matches;
+                if (systemPrefersDark){
+                        console.log('system prefers dark')
+                        setMetronomeBase('../assets/pictures/metronome-grey.svg');
+                        setMetronomeArm('../assets/pictures/arm-white.svg');
+                        setFillColor("crimson")
+                        setMTColor("gray")
+                }
+                else{
+                    console.log('system prefers light')
+                    setMetronomeBase('../assets/pictures/metronome-black.svg');
+                    setMetronomeArm('../assets/pictures/arm-white.svg');
+                    setFillColor("blue")
+                    setMTColor("azure")
+                }
+            }
 
-    let prefersDarkMode = systemPrefersDark();
-    if (prefersDarkMode){
-        console.log('system prefers dark')
-        metronomeBase = '../assets/pictures/metronome-grey.svg';
-        metronomeArm = '../assets/pictures/arm-white.svg';
+            updateTheme()
+            mediaQueryList.addEventListener("change", updateTheme);
+            mediaQueryList.addListener(e => e.matches && updateTheme());
+
+            return() => {
+                mediaQueryList.removeEventListener("change", updateTheme)
+            };
+
+        }, [mediaQueryList]);
     }
-    else{
-        console.log('system prefers light')
-        metronomeBase = '../assets/pictures/metronome-black.svg';
-        metronomeArm = '../assets/pictures/arm-white.svg';
-        fillColor = "blue"
-        mtColor = "azure"
-    }
+
+    querySystem();
 
     const [isRunning, setIsRunning] = useState(false);
     const [bpm, setBpm] = useState(130);

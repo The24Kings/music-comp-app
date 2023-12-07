@@ -1,11 +1,46 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { IonContent, IonButton, IonList, IonItem, IonLabel } from '@ionic/react';
+import { useMediaQuery } from 'react-responsive';
+
+import './TunerContainer.css';
 
 interface ContainerProps {
     name: string;
 }
 
 const TunerContainer: React.FC<ContainerProps> = ({ name }) => {
+
+    //Change button image based on the user's system preferences
+    const [fileImage, setFileImage] = useState('./resources/file_black.png');
+
+    function querySystem(){
+        const mediaQueryList = window.matchMedia('(prefers-color-scheme: dark)');
+
+        React.useEffect(() => {
+            function updateTheme(){
+                const systemPrefersDark = mediaQueryList.matches;
+                if (systemPrefersDark){
+                    console.log('system prefers dark')
+                    setFileImage('./resources/file_white.png')
+                }
+                else{
+                    console.log('system prefers light')
+                    setFileImage('./resources/file_black.png')
+                }
+            }
+
+            updateTheme();
+            mediaQueryList.addEventListener("change", updateTheme)
+            mediaQueryList.addListener(e => e.matches && updateTheme)
+
+            return() => {
+                mediaQueryList.removeEventListener("change", updateTheme)
+            };
+        }, [mediaQueryList]);
+    };
+
+    querySystem();
+
     const [audioFiles, setAudioFiles] = useState<File[]>([]);
     const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -29,28 +64,13 @@ const TunerContainer: React.FC<ContainerProps> = ({ name }) => {
         }
     };
 
-    let fileImage = './resources/file_black.png';
-
-    const querySystem: UseMediaQuery = (query) => {
-        const mediaQueryList = window.matchMedia(query);
-        return mediaQueryList.matches;
-    };
-
-    const systemPrefersDark = () => {
-        return querySystem('(prefers-color-scheme: dark)');
-    };
-
-    let prefersDarkMode = systemPrefersDark();
-    if (prefersDarkMode) {
-        fileImage = './resources/file_white.png';
-    }
-
     return (
         <IonContent>
             <div className="audio-controls">
-                <img id="object" src={`${fileImage}`} /> </div>
+                <img id="object" src={`${fileImage}`} />
+            </div>
 
-            <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+            <div className="load_container">
                 <IonButton onClick={triggerFileInput}>Load Audio Files</IonButton>
                 <input
                     ref={fileInputRef}
@@ -63,21 +83,16 @@ const TunerContainer: React.FC<ContainerProps> = ({ name }) => {
                 />
             </div>
             {audioFiles.length > 0 && (
-                <div style={{ display: 'flex', justifyContent: 'center' }}>
-                    <IonList inset={true} style={{ maxWidth: '700px', width: '100%' }}>
+                <div className="loaded_files">
+                    <IonList inset={true} className="list_inset">
                         {audioFiles.slice(0).map((audioFile, index) => (
-                            <IonItem
-                                key={index}
-                                style={{ height: '100px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}
-                            >
+                            <IonItem key={index} className="file_in_list">
                                 {/* Display the file name text within the new height space */}
-                                <IonLabel style={{ textAlign: 'left', width: '100%', marginTop: '5px' }}>
+                                <IonLabel className="file_title">
                                     <h2>{audioFile.name}</h2>
                                 </IonLabel>
                                 {/* Display the audio player */}
-                                <audio src={URL.createObjectURL(audioFile)} controls controlsList="nodownload" style={{ height: '40px', width: '40%' }}></audio>
-
-                                
+                                <audio src={URL.createObjectURL(audioFile)} controls controlsList="nodownload" className="file_audio"></audio>
                             </IonItem>
                         ))}
                     </IonList>

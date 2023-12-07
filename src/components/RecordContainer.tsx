@@ -1,9 +1,9 @@
 import "./RecordContainer.css"
-import { Component, ElementRef, ViewChild } from '@angular/core';
-import { AnimationController } from '@ionic/angular';
 import { useState, useRef } from "react";
 import { IonButton, IonButtons, IonContent, IonInput, IonItem, IonLabel, IonToolbar, IonIcon } from '@ionic/react';
 import { download } from 'ionicons/icons';
+import { IonSpinner } from '@ionic/react';
+
 
 
 interface ContainerProps {
@@ -48,7 +48,7 @@ const RecordContainer: React.FC<ContainerProps> = ({ name })  => {
                 setStream(streamData);
                 let isGranted: boolean = true;
             } catch (err) {
-                alert(err.message);
+                alert("Please go to Settings and enable Microphone!")
             }
         } else {
             alert("The MediaRecorder API is not supported in your browser.");
@@ -103,7 +103,8 @@ const RecordContainer: React.FC<ContainerProps> = ({ name })  => {
                      </IonButton>
                   
                      {recordingStatus === "recording" ? (
-                        <ion-spinner trigger="trigger" name="circles"></ion-spinner>
+                    <IonSpinner name="circles"></IonSpinner>
+
                      ) : null}
 
                     <IonButton color="danger" margin-bottom="50px" onClick={stopRecording}>

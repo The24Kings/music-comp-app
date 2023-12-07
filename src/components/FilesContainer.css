@@ -55,7 +55,7 @@ ion-item::part(native){
     justify-content: center;
 }
 
-.file_title{
+.file_title {
     text-align: left;
     width: 100%;
     justify-content: center;
@@ -70,4 +70,8 @@ ion-item::part(native){
     .loaded_files .list_inset{
         background: #999999;
     }
+}
+
+ion-content {
+  --overflow: hidden;
 }

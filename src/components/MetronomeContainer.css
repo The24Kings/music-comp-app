@@ -75,3 +75,7 @@
             padding: 0.75em;
     }
 }
+
+ion-content {
+  --overflow: hidden;
+}

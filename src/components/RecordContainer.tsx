@@ -1,5 +1,4 @@
 import "./RecordContainer.css"
-
 import React, { useState, useRef } from "react";
 import { IonButton, IonButtons, IonContent, IonInput, IonItem, IonLabel, IonToolbar, IonIcon, IonSpinner } from '@ionic/react';
 import { download } from 'ionicons/icons';
@@ -11,23 +10,26 @@ interface ContainerProps {
 const mimeType = 'audio/mpeg';
 
 const RecordContainer: React.FC<ContainerProps> = ({ name })  => {
+    window.onload = function () {
+        getMicrophonePermission();
+    };
 
     //Change button image based on the user's system preferences
-    const [buttonImage, setButtonImage] = useState('./resources/button_black.png');
+    const [buttonImage, setButtonImage] = useState('../assets/pictures/button_black.png');
 
-    function querySystem(){
+    function querySystem() {
         const mediaQueryList = window.matchMedia('(prefers-color-scheme: dark)');
 
         React.useEffect(() => {
-            function updateTheme(){
+            function updateTheme() {
                 const systemPrefersDark = mediaQueryList.matches;
-                if(systemPrefersDark){
+                if (systemPrefersDark) {
                     //console.log('system prefers dark')
-                    setButtonImage('./resources/button_white.png')
+                    setButtonImage('../assets/pictures/button_white.png')
                 }
-                else{
+                else {
                     //console.log('system prefers light')
-                    setButtonImage('./resources/button_black.png')
+                    setButtonImage('../assets/button_black.png')
                 }
             }
 
@@ -35,7 +37,7 @@ const RecordContainer: React.FC<ContainerProps> = ({ name })  => {
             mediaQueryList.addEventListener("change", updateTheme)
             mediaQueryList.addListener(e => e.matches && updateTheme)
 
-            return() => {
+            return () => {
                 mediaQueryList.removeEventListener("change", updateTheme)
             };
         }, [mediaQueryList]);
@@ -62,7 +64,7 @@ const RecordContainer: React.FC<ContainerProps> = ({ name })  => {
                 setStream(streamData);
                 let isGranted: boolean = true;
             } catch (err) {
-                alert(err.message);
+                alert("Please go to Settings and enable Microphone!")
             }
         } else {
             alert("The MediaRecorder API is not supported in your browser.");
@@ -70,6 +72,7 @@ const RecordContainer: React.FC<ContainerProps> = ({ name })  => {
     };
 
     const startRecording = async () => {
+        getMicrophonePermission();
         setRecordingStatus("recording");
         //create new Media recorder instance using the stream
         const media = new MediaRecorder(stream);
@@ -90,40 +93,44 @@ const RecordContainer: React.FC<ContainerProps> = ({ name })  => {
     };
 
     const stopRecording = () => {
-        //const i = 0;
-        setRecordingStatus("inactive");
-        //stops the recording instance
-        mediaRecorder.current.stop();
+        try {
+            setRecordingStatus("inactive");
 
-        mediaRecorder.current.onstop = () => {
-            //creates a blob file from the audiochunks data
-            const audioBlob = new Blob(audioChunks, { type: mimeType });
-            //creates a playable URL from the blob file.
-            const audioUrl = URL.createObjectURL(audioBlob);
-   
-            setAudio(audioUrl);
-            setAudioChunks([]);
-        };
+            //stops the recording instance
+            mediaRecorder.current.stop();
+
+            mediaRecorder.current.onstop = () => {
+                //creates a blob file from the audiochunks data
+                const audioBlob = new Blob(audioChunks, { type: mimeType });
+                //creates a playable URL from the blob file.
+                const audioUrl = URL.createObjectURL(audioBlob);
+
+                setAudio(audioUrl);
+                setAudioChunks([]);
+            };
+        } catch (err) {
+            console.log(err.message);
+        }
     };
-    getMicrophonePermission();
   
     return (
-          <IonContent>
-                <div className="audio-controls">
-                     <img id="object" src={`${buttonImage}`}/>
-                  
-                     <IonButton id="trigger" onClick={startRecording}>
-                        Start Recording
-                     </IonButton>
-                  
-                     {recordingStatus === "recording" ? (
-                        <IonSpinner name="circles"></IonSpinner>
-                     ) : null}
+        <IonContent>
+            <div className="audio-controls">
+                <img id="object" src={`${buttonImage}`} />
 
-                    <IonButton color="danger" margin-bottom="50px" onClick={stopRecording}>
-                        Stop Recording
-                    </IonButton>
-                  
+                <IonButton id="trigger" onClick={startRecording} disabled={!permission}>
+                    Start Recording
+                </IonButton>
+
+                {recordingStatus === "recording" ? (
+                    <IonSpinner name="circles"></IonSpinner>
+
+                ) : null}
+
+                <IonButton color="danger" margin-bottom="50px" onClick={stopRecording} disabled={!permission}>
+                    Stop Recording
+                </IonButton>
+
                 {recordingStatus === "inactive" && audio ? (
                     <div className="audio-container">
                         <audio src={audio} controls controlsList="nodownload"></audio>

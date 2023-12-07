@@ -65,14 +65,14 @@ const MetronomeContainer: React.FC<ContainerProps> = ({ selectedSound, name }) =
             function updateTheme(){
                 const systemPrefersDark = mediaQueryList.matches;
                 if (systemPrefersDark){
-                        console.log('system prefers dark')
+                        //console.log('system prefers dark')
                         setMetronomeBase('../assets/pictures/metronome-grey.svg');
                         setMetronomeArm('../assets/pictures/arm-white.svg');
                         setFillColor("crimson")
                         setMTColor("gray")
                 }
                 else{
-                    console.log('system prefers light')
+                    //console.log('system prefers light')
                     setMetronomeBase('../assets/pictures/metronome-black.svg');
                     setMetronomeArm('../assets/pictures/arm-white.svg');
                     setFillColor("blue")

@@ -22,11 +22,11 @@ const RecordContainer: React.FC<ContainerProps> = ({ name })  => {
             function updateTheme(){
                 const systemPrefersDark = mediaQueryList.matches;
                 if(systemPrefersDark){
-                    console.log('system prefers dark')
+                    //console.log('system prefers dark')
                     setButtonImage('./resources/button_white.png')
                 }
                 else{
-                    console.log('system prefers light')
+                    //console.log('system prefers light')
                     setButtonImage('./resources/button_black.png')
                 }
             }

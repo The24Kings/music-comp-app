@@ -2,13 +2,13 @@ import React, { useState, useRef } from 'react';
 import { IonContent, IonButton, IonList, IonItem, IonLabel } from '@ionic/react';
 import { useMediaQuery } from 'react-responsive';
 
-import './TunerContainer.css';
+import './FilesContainer.css';
 
 interface ContainerProps {
     name: string;
 }
 
-const TunerContainer: React.FC<ContainerProps> = ({ name }) => {
+const FilesContainer: React.FC<ContainerProps> = ({ name }) => {
 
     //Change button image based on the user's system preferences
     const [fileImage, setFileImage] = useState('./resources/file_black.png');
@@ -20,11 +20,11 @@ const TunerContainer: React.FC<ContainerProps> = ({ name }) => {
             function updateTheme(){
                 const systemPrefersDark = mediaQueryList.matches;
                 if (systemPrefersDark){
-                    console.log('system prefers dark')
+                    //console.log('system prefers dark')
                     setFileImage('./resources/file_white.png')
                 }
                 else{
-                    console.log('system prefers light')
+                    //console.log('system prefers light')
                     setFileImage('./resources/file_black.png')
                 }
             }

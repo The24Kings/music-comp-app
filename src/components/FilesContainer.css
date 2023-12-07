@@ -22,3 +22,52 @@
 .container a {
   text-decoration: none;
 }
+
+.load_container{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.loaded_files{
+    display: flex;
+    justify-content: center;
+}
+
+.list_inset{
+    max-width: 700px;
+    width: 100%;
+}
+
+.loaded_files .list_inset{
+    border-radius: 2em;
+}
+
+ion-item::part(native){
+    background: none;
+}
+
+.file_in_list{
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.file_title{
+    text-align: left;
+    width: 100%;
+    justify-content: center;
+}
+
+.file_audio{
+    height: 40px;
+    width: 40%;
+}
+
+@media (prefers-color-scheme: light){
+    .loaded_files .list_inset{
+        background: #999999;
+    }
+}

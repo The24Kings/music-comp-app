@@ -1,4 +1,5 @@
 import "./RecordContainer.css"
+
 import React, { useState, useRef } from "react";
 import { IonButton, IonButtons, IonContent, IonInput, IonItem, IonLabel, IonToolbar, IonIcon, IonSpinner } from '@ionic/react';
 import { download } from 'ionicons/icons';
@@ -10,6 +11,9 @@ interface ContainerProps {
 const mimeType = 'audio/mpeg';
 
 const RecordContainer: React.FC<ContainerProps> = ({ name })  => {
+    window.onload = function() {
+      getMicrophonePermission();
+    };
 
     //Change button image based on the user's system preferences
     const [buttonImage, setButtonImage] = useState('../assets/button_black.png');
@@ -33,8 +37,8 @@ const RecordContainer: React.FC<ContainerProps> = ({ name })  => {
             updateTheme()
             mediaQueryList.addEventListener("change", updateTheme)
             mediaQueryList.addListener(e => e.matches && updateTheme)
-
-            return () => {
+          
+  return() => {
                 mediaQueryList.removeEventListener("change", updateTheme)
             };
         }, [mediaQueryList]);
@@ -68,7 +72,7 @@ const RecordContainer: React.FC<ContainerProps> = ({ name })  => {
         }
     };
 
-    const startRecording = async () => {
+  const startRecording = async () => {
         getMicrophonePermission();
         setRecordingStatus("recording");
         //create new Media recorder instance using the stream
@@ -90,36 +94,40 @@ const RecordContainer: React.FC<ContainerProps> = ({ name })  => {
     };
 
     const stopRecording = () => {
-        //const i = 0;
-        setRecordingStatus("inactive");
-        //stops the recording instance
-        mediaRecorder.current.stop();
+        try {
+            setRecordingStatus("inactive");
 
-        mediaRecorder.current.onstop = () => {
-            //creates a blob file from the audiochunks data
-            const audioBlob = new Blob(audioChunks, { type: mimeType });
-            //creates a playable URL from the blob file.
-            const audioUrl = URL.createObjectURL(audioBlob);
-   
-            setAudio(audioUrl);
-            setAudioChunks([]);
-        };
+            //stops the recording instance
+            mediaRecorder.current.stop();
+
+            mediaRecorder.current.onstop = () => {
+                //creates a blob file from the audiochunks data
+                const audioBlob = new Blob(audioChunks, { type: mimeType });
+                //creates a playable URL from the blob file.
+                const audioUrl = URL.createObjectURL(audioBlob);
+
+                setAudio(audioUrl);
+                setAudioChunks([]);
+            };
+        } catch (err) {
+            console.log(err.message);
+        }
     };
   
     return (
-          <IonContent>
+         <IonContent>
                 <div className="audio-controls">
                      <img id="object" src={`${buttonImage}`}/>
                   
-                     <IonButton id="trigger" onClick={startRecording}>
+                     <IonButton id="trigger" onClick={startRecording} disabled={!permission}>
                         Start Recording
                      </IonButton>
                   
-                     {recordingStatus === "recording" ? (
+     {recordingStatus === "recording" ? (
                     <IonSpinner name="circles"></IonSpinner>
                      ) : null}
 
-                    <IonButton color="danger" margin-bottom="50px" onClick={stopRecording}>
+                    <IonButton color="danger" margin-bottom="50px" onClick={stopRecording} disabled={!permission}>
                         Stop Recording
                     </IonButton>
                   

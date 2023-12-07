@@ -13,23 +13,23 @@ const FilesContainer: React.FC<ContainerProps> = ({ name }) => {
     //Change button image based on the user's system preferences
     const [fileImage, setFileImage] = useState('../assets/file_black.png');
 
-    function querySystem() {
+    function querySystem(){
         const mediaQueryList = window.matchMedia('(prefers-color-scheme: dark)');
 
         React.useEffect(() => {
-            function updateTheme() {
+            function updateTheme(){
                 const systemPrefersDark = mediaQueryList.matches;
-                if (systemPrefersDark) {
+                if (systemPrefersDark){
                     //console.log('system prefers dark')
                     setFileImage('../assets/file_white.png')
                 }
-                else {
+                else{
                     //console.log('system prefers light')
                     setFileImage('../assets/file_black.png')
                 }
             }
 
-            updateTheme();
+          updateTheme();
             mediaQueryList.addEventListener("change", updateTheme)
             mediaQueryList.addListener(e => e.matches && updateTheme)
 

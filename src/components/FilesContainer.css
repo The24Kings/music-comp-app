@@ -71,7 +71,3 @@ ion-item::part(native){
         background: #999999;
     }
 }
-
-ion-content {
-  --overflow: hidden;
-}

@@ -15,7 +15,7 @@ import {
 
 import Recorder from './pages/Recorder';
 import Metronome from './pages/Metronome';
-import Tuner from './pages/Tuner';
+import Files from './pages/Files';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -78,7 +78,7 @@ const App: React.FC = () => {
                     <IonRouterOutlet id="main-content">
                         <Route path="/recorder" component={Recorder} exact />
                         <Route path="/metronome" render={() => <Metronome selectedSound={selectedSound} />} exact />
-                        <Route path="/tuner" component={Tuner} exact />
+                        <Route path="/files" component={Files} exact />
                         <Redirect from="/" to="/recorder" exact />
                     </IonRouterOutlet>
 
@@ -93,7 +93,7 @@ const App: React.FC = () => {
                             <IonLabel>Metronome</IonLabel>
                         </IonTabButton>
 
-                        <IonTabButton tab="tuner" href="/tuner">
+                        <IonTabButton tab="files" href="/files">
                             <IonIcon aria-hidden="true" icon={folder} />
                             <IonLabel>Files</IonLabel>
                         </IonTabButton>

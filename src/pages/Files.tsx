@@ -15,7 +15,7 @@ import {
     ellipsisVertical
 } from 'ionicons/icons';
 
-import TunerContainer from '../components/TunerContainer';
+import FilesContainer from '../components/FilesContainer';
 
 const Tuner: React.FC = () => {
     return (
@@ -32,7 +32,7 @@ const Tuner: React.FC = () => {
                     </IonToolbar>
                 </IonHeader>
 
-                <TunerContainer name="Files Page" />
+                <FilesContainer name="Files Page" />
             </IonContent>
         </IonPage>
     );

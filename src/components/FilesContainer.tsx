@@ -1,11 +1,12 @@
 import React, { useState, useRef } from 'react';
 import { IonContent, IonButton, IonList, IonItem, IonLabel } from '@ionic/react';
+import { useMediaQuery } from 'react-responsive'
 
 interface ContainerProps {
     name: string;
 }
 
-const TunerContainer: React.FC<ContainerProps> = ({ name }) => {
+const FilesContainer: React.FC<ContainerProps> = ({ name }) => {
     const [audioFiles, setAudioFiles] = useState<File[]>([]);
     const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -31,7 +32,7 @@ const TunerContainer: React.FC<ContainerProps> = ({ name }) => {
 
     let fileImage = './resources/file_black.png';
 
-    const querySystem: UseMediaQuery = (query) => {
+    const querySystem = (query) => {
         const mediaQueryList = window.matchMedia(query);
         return mediaQueryList.matches;
     };
@@ -87,4 +88,4 @@ const TunerContainer: React.FC<ContainerProps> = ({ name }) => {
     );
 };
 
-export default TunerContainer;
+export default FilesContainer;

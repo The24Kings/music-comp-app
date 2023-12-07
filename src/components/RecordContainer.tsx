@@ -1,6 +1,6 @@
 import "./RecordContainer.css"
 
-import { useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { IonButton, IonButtons, IonContent, IonInput, IonItem, IonLabel, IonToolbar, IonIcon, IonSpinner } from '@ionic/react';
 import { download } from 'ionicons/icons';
 
@@ -12,21 +12,36 @@ const mimeType = 'audio/mpeg';
 
 const RecordContainer: React.FC<ContainerProps> = ({ name })  => {
 
-    let buttonImage = './resources/button_black.png';
+    //Change button image based on the user's system preferences
+    const [buttonImage, setButtonImage] = useState('./resources/button_black.png');
 
-    const querySystem = (query) => {
-        const mediaQueryList = window.matchMedia(query);
-        return mediaQueryList.matches;
+    function querySystem(){
+        const mediaQueryList = window.matchMedia('(prefers-color-scheme: dark)');
+
+        React.useEffect(() => {
+            function updateTheme(){
+                const systemPrefersDark = mediaQueryList.matches;
+                if(systemPrefersDark){
+                    console.log('system prefers dark')
+                    setButtonImage('./resources/button_white.png')
+                }
+                else{
+                    console.log('system prefers light')
+                    setButtonImage('./resources/button_black.png')
+                }
+            }
+
+            updateTheme()
+            mediaQueryList.addEventListener("change", updateTheme)
+            mediaQueryList.addListener(e => e.matches && updateTheme)
+
+            return() => {
+                mediaQueryList.removeEventListener("change", updateTheme)
+            };
+        }, [mediaQueryList]);
     };
 
-    const systemPrefersDark = () => {
-        return querySystem('(prefers-color-scheme: dark)');
-    };
-
-    let prefersDarkMode = systemPrefersDark();
-    if (prefersDarkMode){
-        buttonImage = './resources/button_white.png';
-    }
+    querySystem();
 
     const [permission, setPermission] = useState(false);
     const [stream, setStream] = useState(null);

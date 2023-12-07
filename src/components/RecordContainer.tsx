@@ -29,7 +29,7 @@ const RecordContainer: React.FC<ContainerProps> = ({ name })  => {
                 }
                 else {
                     //console.log('system prefers light')
-                    setButtonImage('../assets/button_black.png')
+                    setButtonImage('../assets/pictures/button_black.png')
                 }
             }
 

@@ -21,6 +21,7 @@ const RecordContainer: React.FC<ContainerProps> = ({ name })  => {
         const mediaQueryList = window.matchMedia('(prefers-color-scheme: dark)');
 
         React.useEffect(() => {
+            getMicrophonePermission();
             function updateTheme() {
                 const systemPrefersDark = mediaQueryList.matches;
                 if (systemPrefersDark) {
@@ -29,7 +30,7 @@ const RecordContainer: React.FC<ContainerProps> = ({ name })  => {
                 }
                 else {
                     //console.log('system prefers light')
-                    setButtonImage('../assets/button_black.png')
+                    setButtonImage('../assets/pictures/button_black.png')
                 }
             }
 

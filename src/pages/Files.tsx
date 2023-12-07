@@ -17,13 +17,13 @@ import {
 
 import FilesContainer from '../components/FilesContainer';
 
-const SavedFiles: React.FC = () => {
+const Tuner: React.FC = () => {
     return (
         <IonPage>
             <IonContent fullscreen>
                 <IonHeader>
                     <IonToolbar>
-                        <IonTitle size="large">Saved Files</IonTitle>
+                        <IonTitle size="large">Files</IonTitle>
 
                         <IonButtons slot="start">
                             <IonMenuButton autoHide={false}></IonMenuButton>
@@ -32,10 +32,10 @@ const SavedFiles: React.FC = () => {
                     </IonToolbar>
                 </IonHeader>
 
-                <FilesContainer name="Saved Files page" />
+                <FilesContainer name="Files Page" />
             </IonContent>
         </IonPage>
     );
 };
 
-export default SavedFiles;
+export default Tuner;

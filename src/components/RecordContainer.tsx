@@ -1,20 +1,57 @@
 import "./RecordContainer.css"
+import React, { useState, useRef } from "react";
+import { IonButton, IonButtons, IonContent, IonInput, IonItem, IonLabel, IonToolbar, IonIcon, IonSpinner } from '@ionic/react';
+import { download } from 'ionicons/icons';
 
-import { useState, useRef } from "react";
-import { FaBeer } from 'react-icons/fa';
 
 interface ContainerProps {
-  name: string;
+    name: string;
 }
 const mimeType = 'audio/mpeg';
 
 const RecordContainer: React.FC<ContainerProps> = ({ name })  => {
+    window.onload = function () {
+        getMicrophonePermission();
+    };
+
+    //Change button image based on the user's system preferences
+    const [buttonImage, setButtonImage] = useState('../assets/pictures/button_black.png');
+
+    function querySystem() {
+        const mediaQueryList = window.matchMedia('(prefers-color-scheme: dark)');
+
+        React.useEffect(() => {
+            function updateTheme() {
+                const systemPrefersDark = mediaQueryList.matches;
+                if (systemPrefersDark) {
+                    //console.log('system prefers dark')
+                    setButtonImage('../assets/pictures/button_white.png')
+                }
+                else {
+                    //console.log('system prefers light')
+                    setButtonImage('../assets/button_black.png')
+                }
+            }
+
+            updateTheme()
+            mediaQueryList.addEventListener("change", updateTheme)
+            mediaQueryList.addListener(e => e.matches && updateTheme)
+
+            return () => {
+                mediaQueryList.removeEventListener("change", updateTheme)
+            };
+        }, [mediaQueryList]);
+    };
+
+    querySystem();
+
     const [permission, setPermission] = useState(false);
     const [stream, setStream] = useState(null);
     const mediaRecorder = useRef(null);
     const [recordingStatus, setRecordingStatus] = useState("inactive");
     const [audioChunks, setAudioChunks] = useState([]);
     const [audio, setAudio] = useState(null);
+    const array = [];
 
     const getMicrophonePermission = async () => {
         if ("MediaRecorder" in window) {
@@ -25,8 +62,9 @@ const RecordContainer: React.FC<ContainerProps> = ({ name })  => {
                 });
                 setPermission(true);
                 setStream(streamData);
+                let isGranted: boolean = true;
             } catch (err) {
-                alert(err.message);
+                alert("Please go to Settings and enable Microphone!")
             }
         } else {
             alert("The MediaRecorder API is not supported in your browser.");
@@ -34,75 +72,75 @@ const RecordContainer: React.FC<ContainerProps> = ({ name })  => {
     };
 
     const startRecording = async () => {
-      setRecordingStatus("recording");
-      //create new Media recorder instance using the stream
-      const media = new MediaRecorder(stream);
-      //set the MediaRecorder instance to the mediaRecorder ref
-      mediaRecorder.current = media;
-      //invokes the start method to start the recording process
-      mediaRecorder.current.start();
+        getMicrophonePermission();
+        setRecordingStatus("recording");
+        //create new Media recorder instance using the stream
+        const media = new MediaRecorder(stream);
+        //set the MediaRecorder instance to the mediaRecorder ref
+        mediaRecorder.current = media;
+        //invokes the start method to start the recording process
+        mediaRecorder.current.start();
 
-      let localAudioChunks = [];
+        let localAudioChunks = [];
 
-      mediaRecorder.current.ondataavailable = (event) => {
-         if (typeof event.data === "undefined") return;
-         if (event.data.size === 0) return;
-         localAudioChunks.push(event.data);
-      };
-      setAudioChunks(localAudioChunks);
+        mediaRecorder.current.ondataavailable = (event) => {
+            if (typeof event.data === "undefined") return;
+            if (event.data.size === 0) return;
+          
+            localAudioChunks.push(event.data);
+        };
+        setAudioChunks(localAudioChunks);
     };
 
     const stopRecording = () => {
-      setRecordingStatus("inactive");
-      //stops the recording instance
-      mediaRecorder.current.stop();
+        try {
+            setRecordingStatus("inactive");
 
-      mediaRecorder.current.onstop = () => {
-        //creates a blob file from the audiochunks data
-         const audioBlob = new Blob(audioChunks, { type: mimeType });
-        //creates a playable URL from the blob file.
-         const audioUrl = URL.createObjectURL(audioBlob);
+            //stops the recording instance
+            mediaRecorder.current.stop();
 
-         setAudio(audioUrl);
-         setAudioChunks([]);
-      };
+            mediaRecorder.current.onstop = () => {
+                //creates a blob file from the audiochunks data
+                const audioBlob = new Blob(audioChunks, { type: mimeType });
+                //creates a playable URL from the blob file.
+                const audioUrl = URL.createObjectURL(audioBlob);
+
+                setAudio(audioUrl);
+                setAudioChunks([]);
+            };
+        } catch (err) {
+            console.log(err.message);
+        }
     };
-
-    /* Needs to be migrated over to Ionic Style Tags rather than HTML Style Tags */
+  
     return (
-        <div>
-            <main>
-                <div className="audio-controls">
-                    <img id="object"
-                        src='./resources/button.png'
-                    />
-                    <button onClick={getMicrophonePermission} type="button" aria-label="Get Microphone Permission">
-                        Get Microphone Permissions
-                    </button>
-                    <button onClick={startRecording} type="button">
-                        Start Recording
-                    </button>
-                    {recordingStatus === "recording" ? (
-                        <div className="progress">
-                          <div className="progress__bar"></div>
-                        </div>
+        <IonContent>
+            <div className="audio-controls">
+                <img id="object" src={`${buttonImage}`} />
 
-                    ) : null}
-                    <button onClick={stopRecording} type="button">
-                        Stop Recording
-                    </button>
-                {audio ? (
-                    <div className="audio-container">
-                        <audio src={audio} controls></audio>
-                        <a download href={audio}>
-                            Download Recording
-                        </a>
-                    </div>
+                <IonButton id="trigger" onClick={startRecording} disabled={!permission}>
+                    Start Recording
+                </IonButton>
+
+                {recordingStatus === "recording" ? (
+                    <IonSpinner name="circles"></IonSpinner>
 
                 ) : null}
-                </div>
-            </main>
-        </div>
+
+                <IonButton color="danger" margin-bottom="50px" onClick={stopRecording} disabled={!permission}>
+                    Stop Recording
+                </IonButton>
+
+                {recordingStatus === "inactive" && audio ? (
+                    <div className="audio-container">
+                        <audio src={audio} controls controlsList="nodownload"></audio>
+                        <a download="SavedRecording.mp3" href={audio}>
+                            <IonIcon className="download" icon={download}></IonIcon>
+                        </a>
+                    </div>
+                ) : null}
+            </div>
+        </IonContent>
     );
 };
 

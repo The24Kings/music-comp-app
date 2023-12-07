@@ -1,65 +1,81 @@
-.container {
-  text-align: center;
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 60%;
-  transform: translateY(-50%);
-}
-
-.container strong {
-  font-size: 20px;
-  line-height: 26px;
-}
-
-.container p {
-  font-size: 16px;
-  line-height: 22px;
-  color: #8c8c8c;
-  margin: 0;
-}
-
-.container a {
-  text-decoration: none;
-}
-
-.main{
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    grid-template-rows: repeat(5, 1fr);
-//    align-items: center;
-}
-
-.metronome{
+.metronome {
     display: grid;
     grid-area: 1 / 3 / 2 / 4;
     place-items: center;
     width: 100%;
 }
 
-.slider{
+.metronome-body {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding-top: 2em;
+}
+
+.metronome-base {
+    position: relative;
+    fill: black;
+}
+
+.metronome-arm {
+    position: absolute;
+}
+
+.metronome-buttons {
+    padding: 2vh 2vw;
+}
+
+.play {
+    padding-right: 2vh;
+}
+
+.stop {
+    padding-left: 2vh;
+}
+
+.slider {
     display: grid;
-    grid-area: 2 / 3 / 3 / 4;
     place-items: center;
 }
 
-.initButtons{
-    display: grid;
-    grid-area: 2 / 3 / 3 / 4;
-    justify-items: center;
-    align-items: start;
+.bpm-buttons {
+    display: flex;
+    justify-content: center;
+    padding: 2vw 4vh;
 }
 
-.label{
-    display: grid;
-    text-align: center;
-    grid-area: 2 / 3 / 3 / 4;
-    place-items: center;
+@media (prefers-color-scheme: light){
+    .tabs-inner{
+        --ion-background-color: url('/assets/pictures/light_triangles_b.png');
+    }
+
+    .input-wrapper, .button-native{
+        font-size: 14pt;
+    }
+
+    .input-wrapper.sc-ion-input-md{
+        background: rgb(225 225 225 / 75%);
+        border-radius: 2em;
+        padding: 0.75em;
+    }
 }
 
-.bpmButtons{
-    display: grid;
-    grid-area: 2 / 3 / 3 / 4;
-    justify-items: center;
-    align-items: end;
+@media (prefers-color-scheme: dark){
+    .tabs-inner{
+        --ion-background-color: url('assets/pictures/dark-triangles.png');
+    }
+
+    #background-content{
+        background-color: rgb(30 30 30);
+    }
+
+    .input-wrapper.sc-ion-input-md{
+            background: rgb(30 30 30);
+            border-radius: 2em;
+            padding: 0.75em;
+    }
+}
+
+ion-content {
+  --overflow: hidden;
 }

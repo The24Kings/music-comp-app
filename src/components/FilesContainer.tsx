@@ -1,68 +1,95 @@
 import React, { useState, useRef } from 'react';
 import { IonContent, IonButton, IonList, IonItem, IonLabel } from '@ionic/react';
 import { useMediaQuery } from 'react-responsive';
-
+import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 import './FilesContainer.css';
+import { isPlatform } from '@ionic/react';
 
 interface ContainerProps {
     name: string;
 }
 
 const FilesContainer: React.FC<ContainerProps> = ({ name }) => {
-
-    //Change button image based on the user's system preferences
     const [fileImage, setFileImage] = useState('../assets/pictures/file_black.png');
+    const [audioFiles, setAudioFiles] = useState<{ name: string; audio: string }[]>([]);
+    const [loadedAudio, setLoadedAudio] = useState<string | null>(null);
+    const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-    function querySystem(){
+    const querySystem = () => {
         const mediaQueryList = window.matchMedia('(prefers-color-scheme: dark)');
 
         React.useEffect(() => {
-            function updateTheme(){
+            function updateTheme() {
                 const systemPrefersDark = mediaQueryList.matches;
-                if (systemPrefersDark){
-                    //console.log('system prefers dark')
-                    setFileImage('../assets/pictures/file_white.png')
-                }
-                else{
-                    //console.log('system prefers light')
-                    setFileImage('../assets/pictures/file_black.png')
+                if (systemPrefersDark) {
+                    setFileImage('../assets/pictures/file_white.png');
+                } else {
+                    setFileImage('../assets/pictures/file_black.png');
                 }
             }
 
-          updateTheme();
-            mediaQueryList.addEventListener("change", updateTheme)
-            mediaQueryList.addListener(e => e.matches && updateTheme)
+            updateTheme();
+            mediaQueryList.addEventListener('change', updateTheme);
+            mediaQueryList.addListener((e) => e.matches && updateTheme);
 
             return () => {
-                mediaQueryList.removeEventListener("change", updateTheme)
+                mediaQueryList.removeEventListener('change', updateTheme);
             };
         }, [mediaQueryList]);
     };
 
-    querySystem();
-
-    const [audioFiles, setAudioFiles] = useState<File[]>([]);
-    const fileInputRef = useRef<HTMLInputElement | null>(null);
-
-    // Function to load audio files from the user's selection
-    const loadAudioFiles = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (event.target.files) {
-            const selectedFiles = Array.from(event.target.files);
-
-            // Update state with only the last 5 audio files
-            setAudioFiles((prevFiles) => {
-                const updatedFiles = [...selectedFiles, ...prevFiles].slice(0, 3);
-                return updatedFiles;
-            });
-        }
-    };
-
-    // Function to trigger file input click
     const triggerFileInput = () => {
         if (fileInputRef.current) {
             fileInputRef.current.click();
         }
     };
+
+    const loadAudioFiles = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (event.target.files) {
+            const selectedFiles = Array.from(event.target.files);
+
+            const selectedFile = selectedFiles[0];
+
+            try {
+                const blobUrl = URL.createObjectURL(selectedFile);
+
+                if (isPlatform('android')) {
+                    // Android specific file loading
+                    const response = await fetch(blobUrl);
+                    const data = await response.text();
+
+                    setAudioFiles((prevFiles) => [
+                        {
+                            name: selectedFile.name,
+                            audio: data,
+                        },
+                        ...prevFiles.slice(0, 2),
+                    ]);
+                } else {
+                    // Web-specific file loading
+                    const fileReader = new FileReader();
+
+                    fileReader.onload = (event) => {
+                        const result = event.target?.result as string;
+
+                        setAudioFiles((prevFiles) => [
+                            {
+                                name: selectedFile.name,
+                                audio: result,
+                            },
+                            ...prevFiles.slice(0, 2),
+                        ]);
+                    };
+
+                    fileReader.readAsDataURL(selectedFile);
+                }
+            } catch (error) {
+                console.error('Error reading file:', error);
+            }
+        }
+    };
+
+    querySystem();
 
     return (
         <IonContent>
@@ -82,17 +109,16 @@ const FilesContainer: React.FC<ContainerProps> = ({ name }) => {
                     style={{ display: 'none' }}
                 />
             </div>
+
             {audioFiles.length > 0 && (
                 <div className="loaded_files">
                     <IonList inset={true} className="list_inset">
-                        {audioFiles.slice(0).map((audioFile, index) => (
+                        {audioFiles.map((file, index) => (
                             <IonItem key={index} className="file_in_list">
-                                {/* Display the file name text within the new height space */}
                                 <IonLabel className="file_title">
-                                    <h2>{audioFile.name}</h2>
+                                    <h2>{file.name}</h2>
                                 </IonLabel>
-                                {/* Display the audio player */}
-                                <audio src={URL.createObjectURL(audioFile)} controls controlsList="nodownload" className="file_audio"></audio>
+                                <audio src={file.audio} controls controlsList="nodownload" className="file_audio"></audio>
                             </IonItem>
                         ))}
                     </IonList>

@@ -1,4 +1,4 @@
-#Metronome & Recorder App
+# Metronome & Recorder App
 
 A cross-platform mobile app using React and Ionic was made for musicians to help record their music and even help with their timing. 
 

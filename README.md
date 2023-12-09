@@ -25,7 +25,7 @@ Screenshots:
 How to Run the App:
 - Go to the command line and change directory into the root
 - Install node modules if you don't already have it
-- Run 'ionic Build' and install Vite when it prompts you
+- Run 'ionic build' and install Vite when it prompts you
 - Run 'ionic cap sync'
 - Then you're ready for either:
 

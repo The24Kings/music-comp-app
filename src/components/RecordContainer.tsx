@@ -123,9 +123,6 @@ const RecordContainer: React.FC<ContainerProps> = ({ name }) => {
             const fileName = `SavedRecording_${timestamp}.mp3`;
 
             if (isPlatform('android')) {
-                // Android specific download handling
-                // Add your Android-specific code here
-                // For example, you can use Capacitor's Filesystem API for Android
                 const { uri } = await Filesystem.writeFile({
                     path: fileName,
                     data: audio,
@@ -133,10 +130,8 @@ const RecordContainer: React.FC<ContainerProps> = ({ name }) => {
                     encoding: Encoding.UTF8,
                 });
                 console.log('File saved at:', uri);
+                alert("File Saved: " + fileName);
             } else {
-                // Web-specific download handling
-                // Add your web-specific code here
-                // For example, you can create an anchor element and simulate a click to download the file
                 const downloadLink = document.createElement('a');
                 downloadLink.href = audio;
                 downloadLink.download = fileName;
@@ -173,8 +168,7 @@ const RecordContainer: React.FC<ContainerProps> = ({ name }) => {
                                 <IonIcon icon={download} slot="start" size="large" />
                             </IonButton>
                         ) : (
-                            // No need for a separate button on the web, use a simple anchor element
-                            <a download={`SavedRecording_${new Date().getTime()}.mp3`} href={audio}>
+                            <a download={`SavedRecording.mp3`} href={audio}>
                                 <IonButton fill="clear">
                                     <IonIcon icon={download} slot="start" size="large" />
                                 </IonButton>

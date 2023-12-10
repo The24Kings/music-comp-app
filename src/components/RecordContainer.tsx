@@ -2,14 +2,16 @@ import "./RecordContainer.css"
 import React, { useState, useRef } from "react";
 import { IonButton, IonButtons, IonContent, IonInput, IonItem, IonLabel, IonToolbar, IonIcon, IonSpinner } from '@ionic/react';
 import { download } from 'ionicons/icons';
+import { isPlatform } from '@ionic/react';
 
+import { Filesystem, Directory, Encoding, } from '@capacitor/filesystem';
 
 interface ContainerProps {
     name: string;
 }
 const mimeType = 'audio/mpeg';
 
-const RecordContainer: React.FC<ContainerProps> = ({ name })  => {
+const RecordContainer: React.FC<ContainerProps> = ({ name }) => {
     window.onload = function () {
         getMicrophonePermission();
     };
@@ -73,23 +75,26 @@ const RecordContainer: React.FC<ContainerProps> = ({ name })  => {
 
     const startRecording = async () => {
         getMicrophonePermission();
-        setRecordingStatus("recording");
-        //create new Media recorder instance using the stream
-        const media = new MediaRecorder(stream);
-        //set the MediaRecorder instance to the mediaRecorder ref
-        mediaRecorder.current = media;
-        //invokes the start method to start the recording process
-        mediaRecorder.current.start();
+        if (permission) {
+            setRecordingStatus("recording");
+            //create new Media recorder instance using the stream
+            const media = new MediaRecorder(stream);
+            //set the MediaRecorder instance to the mediaRecorder ref
+            mediaRecorder.current = media;
+            //invokes the start method to start the recording process
+            mediaRecorder.current.start();
 
-        let localAudioChunks = [];
+            let localAudioChunks = [];
 
-        mediaRecorder.current.ondataavailable = (event) => {
-            if (typeof event.data === "undefined") return;
-            if (event.data.size === 0) return;
-          
-            localAudioChunks.push(event.data);
-        };
-        setAudioChunks(localAudioChunks);
+            mediaRecorder.current.ondataavailable = (event) => {
+                if (typeof event.data === "undefined") return;
+                if (event.data.size === 0) return;
+
+                localAudioChunks.push(event.data);
+            };
+            setAudioChunks(localAudioChunks);
+        }
+        else { return }
     };
 
     const stopRecording = () => {
@@ -112,13 +117,37 @@ const RecordContainer: React.FC<ContainerProps> = ({ name })  => {
             console.log(err.message);
         }
     };
-  
+    const handleDownloadClick = async () => {
+        try {
+            const timestamp = new Date().getTime();
+            const fileName = `SavedRecording_${timestamp}.mp3`;
+
+            if (isPlatform('android')) {
+                const { uri } = await Filesystem.writeFile({
+                    path: fileName,
+                    data: audio,
+                    directory: Directory.Documents,
+                    encoding: Encoding.UTF8,
+                });
+                console.log('File saved at:', uri);
+                alert("File Saved: " + fileName);
+            } else {
+                const downloadLink = document.createElement('a');
+                downloadLink.href = audio;
+                downloadLink.download = fileName;
+                downloadLink.click();
+            }
+        } catch (error) {
+            alert('Error saving/downloading file:');
+        }
+    };
+
     return (
         <IonContent>
             <div className="audio-controls">
                 <img id="object" src={`${buttonImage}`} />
 
-                <IonButton id="trigger" onClick={startRecording} disabled={!permission}>
+                <IonButton id="trigger" onClick={startRecording}>
                     Start Recording
                 </IonButton>
 
@@ -131,12 +160,20 @@ const RecordContainer: React.FC<ContainerProps> = ({ name })  => {
                     Stop Recording
                 </IonButton>
 
-                {recordingStatus === "inactive" && audio ? (
+                {recordingStatus === 'inactive' && audio ? (
                     <div className="audio-container">
                         <audio src={audio} controls controlsList="nodownload"></audio>
-                        <a download="SavedRecording.mp3" href={audio}>
-                            <IonIcon className="download" icon={download}></IonIcon>
-                        </a>
+                        {isPlatform('android') ? (
+                            <IonButton onClick={handleDownloadClick} fill="clear">
+                                <IonIcon icon={download} slot="start" size="large" />
+                            </IonButton>
+                        ) : (
+                            <a download={`SavedRecording.mp3`} href={audio}>
+                                <IonButton fill="clear">
+                                    <IonIcon icon={download} slot="start" size="large" />
+                                </IonButton>
+                            </a>
+                        )}
                     </div>
                 ) : null}
             </div>
